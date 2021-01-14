@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -25,7 +27,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.dhfl.OnlinePaymentGatewayDataDump.config.ApplicationConfig;
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
+import com.dhfl.OnlinePaymentGatewayDataDump.entity.FileUploadDetailsEntity;
 import com.dhfl.OnlinePaymentGatewayDataDump.repo.DHFLCustomersRepo;
+import com.dhfl.OnlinePaymentGatewayDataDump.repo.FileUploadDetailsRepo;
 import com.dhfl.OnlinePaymentGatewayDataDump.service.DHFLCustomersInter;
 import com.dhfl.OnlinePaymentGatewayDataDump.util.ExcelHelper;
 import com.dhfl.OnlinePaymentGatewayDataDump.util.ReadExcelFile;
@@ -41,6 +45,12 @@ public class DataDumpController {
 	
 	@Autowired
 	DHFLCustomersInter dhflCustomersInter;
+	
+	//@Autowired
+	//FileUploadDetailsEntity fileUploadDetailsEntity;
+	
+	@Autowired
+	FileUploadDetailsRepo fileUploadDetailsRepo;
 	
 	@Autowired
 	ApplicationConfig applicationConfig;
@@ -72,8 +82,19 @@ public class DataDumpController {
 			// Get the file and save it somewhere
 			System.out.println("UPLOADED EMAILID="+email);
 			System.out.println("File Name==>>"+UPLOADED_FOLDER + FNAME+"_"+file.getOriginalFilename());
+			String file_report_path = UPLOADED_FOLDER + FNAME+"_"+file.getOriginalFilename();
 			redirectAttributes.addFlashAttribute("message", "File Uploaded successfully, report will be mailed to "+email+".");
 			redirectAttributes.addFlashAttribute("uploadStatus", null);
+			
+			Date date = new Date(CURR_TIME_MILES);
+			FileUploadDetailsEntity fileUploadDetailsEntity = new FileUploadDetailsEntity();
+			fileUploadDetailsEntity.setEmail_id(email);
+			fileUploadDetailsEntity.setFile_ref_num(FNAME);
+			fileUploadDetailsEntity.setFile_upload_path(file_report_path);
+			fileUploadDetailsEntity.setFile_report_path(file_report_path);
+			fileUploadDetailsEntity.setFile_status("U");
+			fileUploadDetailsEntity.setFile_upload_time(date);
+			fileUploadDetailsRepo.save(fileUploadDetailsEntity);
 			/*String uploadFileName = file.getOriginalFilename();
 			if (uploadFileName != null && (uploadFileName.contains(".xlsx") || uploadFileName.contains(".xls"))) {
 				File initialFile = new File(UPLOADED_FOLDER + file.getOriginalFilename());

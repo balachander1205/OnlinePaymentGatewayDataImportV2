@@ -42,9 +42,10 @@ public class ReadExcel {
 		}
 	}
 	
-	public static void readXLSXFile() throws IOException {
+	public static void readXLSXFile(String filePath) throws IOException {
 		// obtaining input bytes from a file
-		FileInputStream fis = new FileInputStream(new File("E:\\DHFL\\upload\\Click_To_Pay_Fields_50K_rows.xlsx"));
+		//FileInputStream fis = new FileInputStream(new File("E:\\DHFL\\upload\\Click_To_Pay_Fields_50K_rows.xlsx"));
+		FileInputStream fis = new FileInputStream(new File(filePath));
 		// creating workbook instance that refers to .xls file
 		//HSSFWorkbook wb = new HSSFWorkbook(fis);
 		XSSFWorkbook wb = new XSSFWorkbook(fis);
