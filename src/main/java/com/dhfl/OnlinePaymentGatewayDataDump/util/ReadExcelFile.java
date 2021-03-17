@@ -157,7 +157,7 @@ public class ReadExcelFile {
 						}
 						cellIdx++;
 					}
-					System.out.println("-------------------------");
+					//System.out.println("-------------------------");
 					customers.add(tutorial);
 				}
 			}
@@ -186,7 +186,7 @@ public class ReadExcelFile {
 		}else {
 			value = "0";
 		}
-		System.out.println("Value----->>>" + value);
+		//System.out.println("Value----->>>" + value);
 		return value;
 	}
 

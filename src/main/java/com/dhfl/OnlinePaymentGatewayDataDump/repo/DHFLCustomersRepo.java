@@ -1,5 +1,7 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -36,4 +38,10 @@ public interface DHFLCustomersRepo extends CrudRepository<DHFLCustomersEntity, L
 			@Param("MinimumChargeAmount") Long MinimumChargeAmount, @Param("mobileno") String mobileno,
 			@Param("customername") String customername, @Param("OverdueBlankField") Long overdueBlankField,
 			@Param("ChargeBlankField") Long chanrgesBlankField);
+	
+	@Query("select loandata.brloancode from DHFLCustomersEntity loandata")
+	List<String> getAllBrLoanCodes();
+	
+	@Query("select loandata.applno from DHFLCustomersEntity loandata")
+	List<String> getAllAppNumbers();
 }

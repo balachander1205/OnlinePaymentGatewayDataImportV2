@@ -47,19 +47,24 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 		int count = 0;
 		try {			
 			//readExcel.readXLSXFile();
-			FileUploadDetailsEntity fileUploadEntity = fileUploadDetailsInter.getUPloadedFile();
-			if(fileUploadEntity!=null) {
-				System.out.println("File Ref Numner="+fileUploadEntity.getFile_ref_num());
-				System.out.println("File Upload Time="+fileUploadEntity.getFile_upload_time());
-				System.out.println("File Upload Path="+fileUploadEntity.getFile_upload_path());
-				//readExcel.readXLSXFile(fileUploadEntity.getFile_upload_path());
-				String uploadFileName = fileUploadEntity.getFile_upload_path();
-				String file_ref_num = fileUploadEntity.getFile_ref_num();
-				fileUploadDetailsInter.updateFileStatusP(file_ref_num);			
-				System.out.println("File Process Started.......(~|~)");
-				processUploadedFile(uploadFileName);
-				System.out.println("File Process Completed ('-').......");
-				fileUploadDetailsInter.updateFileStatusC(file_ref_num);
+			//FileUploadDetailsEntity fileUploadEntity = fileUploadDetailsInter.getUPloadedFile();
+			List<FileUploadDetailsEntity> allUploadedFiles = fileUploadDetailsInter.getAllUploadedFile();
+			if(allUploadedFiles.size()>0) {
+				for(FileUploadDetailsEntity fileUploadEntity : allUploadedFiles) {
+					System.out.println("File Ref Number="+fileUploadEntity.getFile_ref_num());
+					System.out.println("File Upload Time="+fileUploadEntity.getFile_upload_time());
+					System.out.println("File Upload Path="+fileUploadEntity.getFile_upload_path());
+					//readExcel.readXLSXFile(fileUploadEntity.getFile_upload_path());
+					String uploadFileName = fileUploadEntity.getFile_upload_path();
+					String file_ref_num = fileUploadEntity.getFile_ref_num();
+					fileUploadDetailsInter.updateFileStatusP(file_ref_num);			
+					System.out.println("File Process Started.......(~|~)");
+					final long start = System.currentTimeMillis();
+					processUploadedFile(uploadFileName);
+					System.out.println("File Process Completed ('-').......");
+					System.out.println("Elapsed time: "+(System.currentTimeMillis() - start));
+					fileUploadDetailsInter.updateFileStatusC(file_ref_num);
+				}
 			}
 			System.out.println("Cron Started="+count);
 		}catch (Exception e) {
@@ -86,23 +91,48 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 					System.out.println("Customers Size====" + customers.size());
 					if (customers.size() > 0) {
 						System.out.println("Customers Size1====" + customers.size());
+						List<String> brLoanCodes = respository.getAllBrLoanCodes();
+						List<String> appNumbers = respository.getAllAppNumbers();
+						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>BrLoanCodes="+brLoanCodes);
+						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>appNumbers="+appNumbers);
+						for(String loanCode : brLoanCodes) {
+							System.out.println("Loan Code="+loanCode);
+						}
 						for (DHFLCustomersEntity entity : customers) {
 							String applNo = entity.getApplno();
 							String brLoanCode = entity.getBrloancode();
 							System.out.println("ApplNumber----->>>>>" + applNo);
-							DHFLCustomersEntity row = respository.searchByAppNoLoanCode(applNo, brLoanCode);
-							// insert row if data not exists
-							if (row == null) {
-								respository.save(entity);
-								insertedRows++;
+							// Validating data over list.contains
+							if(brLoanCodes.size()>0 && appNumbers.size()>0) {
+								if (!brLoanCodes.contains(brLoanCode) || !appNumbers.contains(applNo)) {
+									System.out.println("New record inserting... AppNo="+applNo+" brLoanCode="+brLoanCode);
+									//respository.save(entity);
+									dhflCustomersInter.saveRecord(entity);
+									insertedRows++;
+								} else {
+									// Update row
+									System.out.println("Row already exists..Updating record..applNo="+applNo+" brLoanCode="+brLoanCode);
+									dhflCustomersInter.updateCustomer(applNo, entity.getMinimumOverdueAmount(),
+											entity.getTotalOverdueEMI(), entity.getTotalChargesAmount(),
+											entity.getMinimumChargeAmount(), entity.getMobileno(), entity.getCustomername(),
+											entity.getOverdueBlankField(), entity.getChargeBlankField());
+									updatedRows++;
+								}
 							} else {
-								// Update row
-								System.out.println("Row already exists..Updating record..");
-								dhflCustomersInter.updateCustomer(applNo, entity.getMinimumOverdueAmount(),
-										entity.getTotalOverdueEMI(), entity.getTotalChargesAmount(),
-										entity.getMinimumChargeAmount(), entity.getMobileno(), entity.getCustomername(),
-										entity.getOverdueBlankField(), entity.getChargeBlankField());
-								updatedRows++;
+								DHFLCustomersEntity row = respository.searchByAppNoLoanCode(applNo, brLoanCode);
+								if (row == null) {
+									respository.save(entity);
+									insertedRows++;
+								} else {
+									// Update row
+									System.out.println("Row already exists..Updating record..");
+									dhflCustomersInter.updateCustomer(applNo, entity.getMinimumOverdueAmount(),
+											entity.getTotalOverdueEMI(), entity.getTotalChargesAmount(),
+											entity.getMinimumChargeAmount(), entity.getMobileno(),
+											entity.getCustomername(), entity.getOverdueBlankField(),
+											entity.getChargeBlankField());
+									updatedRows++;
+								}
 							}
 						}
 					}

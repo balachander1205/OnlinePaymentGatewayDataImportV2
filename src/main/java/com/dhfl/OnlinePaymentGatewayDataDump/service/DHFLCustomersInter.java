@@ -1,5 +1,7 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.service;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.data.repository.query.Param;
 
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
@@ -13,4 +15,5 @@ public interface DHFLCustomersInter {
 			Long TotalOverdueEMI, Long TotalChargesAmount,
 			Long MinimumChargeAmount, String mobileno, String customerNam, 
 			Long overdueBlankField, Long chanrgesBlankField);
+	public CompletableFuture<DHFLCustomersEntity> saveRecord(DHFLCustomersEntity entity);
 }

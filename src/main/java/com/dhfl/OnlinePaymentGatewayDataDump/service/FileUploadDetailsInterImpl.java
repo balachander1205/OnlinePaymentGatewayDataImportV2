@@ -1,5 +1,7 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,11 @@ public class FileUploadDetailsInterImpl implements FileUploadDetailsInter{
 	@Override
 	public int updateFileStatusC(String file_ref_num) {
 		return fileUploadServiceRepo.updateFileStatusC(file_ref_num);
+	}
+
+	@Override
+	public List<FileUploadDetailsEntity> getAllUploadedFile() {
+		return fileUploadServiceRepo.getAllUploadedFile();
 	}
 	
 }

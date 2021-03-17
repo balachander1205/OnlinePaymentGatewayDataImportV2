@@ -1,5 +1,7 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.repo;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -7,12 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.FileUploadDetailsEntity;
 
 @Repository
 public interface FileUploadDetailsRepo extends CrudRepository<FileUploadDetailsEntity, String>{
+	
+	@Query("select uploadData from FileUploadDetailsEntity uploadData where uploadData.file_status = 'U'")
+	List<FileUploadDetailsEntity> getAllUploadedFile();
+	
 	@Query("select uploadData from FileUploadDetailsEntity uploadData where uploadData.file_status = 'U'")
 	FileUploadDetailsEntity getUploadedFile();
 	

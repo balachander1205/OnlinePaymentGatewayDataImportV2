@@ -1,7 +1,9 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.service;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
@@ -11,6 +13,11 @@ import com.dhfl.OnlinePaymentGatewayDataDump.repo.DHFLCustomersRepo;
 public class DHFLCustomersInterImpl implements DHFLCustomersInter{
 	@Autowired
 	DHFLCustomersRepo dhflCustomersRepo;
+	
+	@Async
+	public CompletableFuture<DHFLCustomersEntity> saveRecord(DHFLCustomersEntity entity) {
+		return CompletableFuture.completedFuture(dhflCustomersRepo.save(entity));
+	}
 
 	@Override
 	public DHFLCustomersEntity searchByBrLoanCode(String brLoanCode) {
