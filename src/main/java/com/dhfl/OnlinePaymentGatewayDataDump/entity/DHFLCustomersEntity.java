@@ -133,4 +133,12 @@ public class DHFLCustomersEntity {
 	public void setChargeBlankField(Long chargeBlankField) {
 		ChargeBlankField = chargeBlankField;
 	}
+	
+	@Override
+	public String toString() {
+		return "[ Name="+this.getCustomername() + " LoanCode="+this.getBrloancode()+" AppNo="+this.getApplno()+
+				" Total OverDue="+this.getTotalOverdueEMI()+" MinOverDue="+this.getMinimumOverdueAmount()+
+				" TotalCharges="+this.getTotalChargesAmount()+ " MinCharges="+this.getMinimumChargeAmount()+
+				" Mobile Number="+this.getMobileno();
+	}
 }
