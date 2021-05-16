@@ -29,8 +29,12 @@ public class FileUploadDetailsInterImpl implements FileUploadDetailsInter{
 	}
 
 	@Override
-	public List<FileUploadDetailsEntity> getAllUploadedFile() {
-		return fileUploadServiceRepo.getAllUploadedFile();
+	public List<FileUploadDetailsEntity> getAllUploadedFilesU() {
+		return fileUploadServiceRepo.getAllUploadedFilesU();
 	}
 	
+	@Override
+	public List<FileUploadDetailsEntity> getAllUploadedFilesP() {
+		return fileUploadServiceRepo.getAllUploadedFilesP();
+	}
 }

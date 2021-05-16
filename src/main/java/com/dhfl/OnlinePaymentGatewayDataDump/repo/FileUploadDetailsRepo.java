@@ -15,7 +15,10 @@ import com.dhfl.OnlinePaymentGatewayDataDump.entity.FileUploadDetailsEntity;
 public interface FileUploadDetailsRepo extends CrudRepository<FileUploadDetailsEntity, String>{
 	
 	@Query("select uploadData from FileUploadDetailsEntity uploadData where uploadData.file_status = 'U'")
-	List<FileUploadDetailsEntity> getAllUploadedFile();
+	List<FileUploadDetailsEntity> getAllUploadedFilesU();
+	
+	@Query("select uploadData from FileUploadDetailsEntity uploadData where uploadData.file_status = 'P'")
+	List<FileUploadDetailsEntity> getAllUploadedFilesP();
 	
 	@Query("select uploadData from FileUploadDetailsEntity uploadData where uploadData.file_status = 'U'")
 	FileUploadDetailsEntity getUploadedFile();

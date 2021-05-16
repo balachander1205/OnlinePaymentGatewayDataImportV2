@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +57,19 @@ public class DataDumpController {
 	ApplicationConfig applicationConfig;
 
 	@GetMapping("/fileupload")
-	public String index() {
+	public String index(ModelMap model) {
+		String message = null;
+		String disable = "false";
+		List<FileUploadDetailsEntity> listOfFilesU = fileUploadDetailsRepo.getAllUploadedFilesU();
+		List<FileUploadDetailsEntity> listOfFilesP = fileUploadDetailsRepo.getAllUploadedFilesP();
+		System.out.println("P type files = "+listOfFilesP.size() +" U type files = "+listOfFilesU.size());
+		if(listOfFilesU.size() > 0 || listOfFilesP.size() > 0) {
+			System.out.println("P type files1 = "+listOfFilesP.size() +" U type files = "+listOfFilesU.size());
+			message = "Another file upload is in progress. Please refresh after sometime for new upload.";
+			disable = "true";
+		}
+		model.put("message", message);
+		model.put("disable", disable);
 		return "upload";
 	}
 

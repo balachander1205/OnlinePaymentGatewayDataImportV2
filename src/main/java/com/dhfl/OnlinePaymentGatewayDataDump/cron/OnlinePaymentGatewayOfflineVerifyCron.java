@@ -48,7 +48,7 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 		try {			
 			//readExcel.readXLSXFile();
 			//FileUploadDetailsEntity fileUploadEntity = fileUploadDetailsInter.getUPloadedFile();
-			List<FileUploadDetailsEntity> allUploadedFiles = fileUploadDetailsInter.getAllUploadedFile();
+			List<FileUploadDetailsEntity> allUploadedFiles = fileUploadDetailsInter.getAllUploadedFilesU();
 			if(allUploadedFiles.size()>0) {
 				for(FileUploadDetailsEntity fileUploadEntity : allUploadedFiles) {
 					System.out.println("File Ref Number="+fileUploadEntity.getFile_ref_num());
@@ -85,7 +85,8 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 				System.out.println("Input Stream=" + targetStream);
 				// List<DHFLCustomersEntity> customers =
 				// ExcelHelper.excelToTutorials(targetStream);
-				List<DHFLCustomersEntity> customers = ReadExcelFile.excelToTutorials(targetStream);
+				//List<DHFLCustomersEntity> customers = ReadExcelFile.excelToTutorials(targetStream);
+				List<DHFLCustomersEntity> customers = ReadExcelFile.parseExcelAndValidate(targetStream);
 				int totalRows = customers != null || customers.size() > 0 ? customers.size() : 0;
 				try {
 					System.out.println("Customers Size====" + customers.size());
@@ -93,11 +94,11 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 						System.out.println("Customers Size1====" + customers.size());
 						List<String> brLoanCodes = respository.getAllBrLoanCodes();
 						List<String> appNumbers = respository.getAllAppNumbers();
-						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>BrLoanCodes="+brLoanCodes);
-						System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>appNumbers="+appNumbers);
-						for(String loanCode : brLoanCodes) {
+						//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>BrLoanCodes="+brLoanCodes);
+						//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>appNumbers="+appNumbers);
+						/*for(String loanCode : brLoanCodes) {
 							System.out.println("Loan Code="+loanCode);
-						}
+						}*/
 						for (DHFLCustomersEntity entity : customers) {
 							String applNo = entity.getApplno();
 							String brLoanCode = entity.getBrloancode();

@@ -82,7 +82,8 @@ public class ReadExcelFile {
 					List<Cell> cells = new ArrayList<Cell>();
 					int lastColumn = Math.max(row.getLastCellNum(), 5);
 					for (int cn = 0; cn < lastColumn; cn++) {
-						Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						//Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS//_NULL);
+						Cell c = row.getCell(cn, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
 						cells.add(c);
 					}
 					Iterator<Cell> cellsInRow = cells.iterator();
@@ -207,7 +208,8 @@ public class ReadExcelFile {
 					List<Cell> cells = new ArrayList<Cell>();
 					int lastColumn = Math.max(row.getLastCellNum(), 5);
 					for (int cn = 0; cn < lastColumn; cn++) {
-						Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						//Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						Cell c = row.getCell(cn, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
 						cells.add(c);
 					}
 					Iterator<Cell> cellsInRow = cells.iterator();
@@ -279,8 +281,8 @@ public class ReadExcelFile {
 						cellIdx++;
 					}
 					System.out.println("-------------------------");
-					System.out.println(tutorial.toString()+"\n");
-					System.out.println(validationDesc+"\n");
+					System.out.println(tutorial.toString());
+					System.out.println("Validation Desc="+validationDesc+"\n");
 					customers.add(tutorial);
 				}
 			}
