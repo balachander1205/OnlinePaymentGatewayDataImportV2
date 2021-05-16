@@ -3,6 +3,7 @@ package com.dhfl.OnlinePaymentGatewayDataDump.cron;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +63,10 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 					final long start = System.currentTimeMillis();
 					processUploadedFile(uploadFileName);
 					System.out.println("File Process Completed ('-').......");
-					System.out.println("Elapsed time: "+(System.currentTimeMillis() - start));
+					long executioTime = System.currentTimeMillis() - start;
+					System.out.println("Elapsed time milliseconds: "+(executioTime));
+					long minutes = TimeUnit.MILLISECONDS.toMinutes(executioTime);
+					System.out.println("Elapsed time minutes: "+(minutes));
 					fileUploadDetailsInter.updateFileStatusC(file_ref_num);
 				}
 			}
@@ -83,6 +87,7 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 				File initialFile = new File(uploadFileName);
 				FileInputStream targetStream = new FileInputStream(initialFile);
 				System.out.println("Input Stream=" + targetStream);
+				long startTime = System.nanoTime();
 				// List<DHFLCustomersEntity> customers =
 				// ExcelHelper.excelToTutorials(targetStream);
 				//List<DHFLCustomersEntity> customers = ReadExcelFile.excelToTutorials(targetStream);
@@ -102,7 +107,7 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 						for (DHFLCustomersEntity entity : customers) {
 							String applNo = entity.getApplno();
 							String brLoanCode = entity.getBrloancode();
-							System.out.println("ApplNumber----->>>>>" + applNo);
+							//System.out.println("ApplNumber----->>>>>" + applNo);
 							// Validating data over list.contains
 							if(brLoanCodes.size()>0 && appNumbers.size()>0) {
 								if (!brLoanCodes.contains(brLoanCode) || !appNumbers.contains(applNo)) {
@@ -137,6 +142,12 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 							}
 						}
 					}
+					long endTime = System.nanoTime();
+					// get the difference between the two nano time valuess
+			        long timeElapsed = endTime - startTime;
+			 
+			        System.out.println("Execution time in nanoseconds: " + timeElapsed);
+			        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 				} catch (Exception e) {
 					logger.debug("Exception@inserting customer data=" + e);				
 				}
