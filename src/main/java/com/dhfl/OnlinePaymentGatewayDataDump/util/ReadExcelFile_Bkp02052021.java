@@ -82,7 +82,8 @@ public class ReadExcelFile_Bkp02052021 {
 					List<Cell> cells = new ArrayList<Cell>();
 					int lastColumn = Math.max(row.getLastCellNum(), 5);
 					for (int cn = 0; cn < lastColumn; cn++) {
-						Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						//Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						Cell c = row.getCell(cn, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
 						cells.add(c);
 					}
 					Iterator<Cell> cellsInRow = cells.iterator();

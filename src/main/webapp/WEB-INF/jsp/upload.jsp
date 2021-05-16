@@ -272,12 +272,15 @@ function validate(file) {
 							</div>
 							<div class="form-group">
 								<label for="contain">Upload Data File (.xlsx)</label> <input required type="file"
-									name="file" class="btn btn-primary mb-2" accept=".xlsx, .xls" id="dataFileBtn" onChange="validate(this.value)"/><br /> <br /> <input type="submit"
-									value="Submit" class="btn btn-primary mb-2" />
+									name="file" class="btn btn-primary mb-2" accept=".xlsx, .xls" id="dataFileBtn" onChange="validate(this.value)"/><br /> <br /> 
+								<input type="submit" id="btnFileSubmit" value="Submit" class="btn btn-primary mb-2" />
 							</div>
 							<!-- file upload status message.. -->
-							<c:if test="${message}!=null">
-								<label style="color: green; font-size: 14px;">${message}</label>
+							<c:if test="${message !=null}">
+								<label style="color: red; font-size: 14px;">${message}</label>
+								<script type="text/javascript">
+									$('#btnFileSubmit').prop('disabled',${disable});
+								</script>
 							</c:if>
 						</div>
 					</div>

@@ -8,5 +8,6 @@ public interface FileUploadDetailsInter {
 	FileUploadDetailsEntity getUPloadedFile();
 	int updateFileStatusP(String file_ref_num);
 	int updateFileStatusC(String file_ref_num);
-	List<FileUploadDetailsEntity> getAllUploadedFile();
+	List<FileUploadDetailsEntity> getAllUploadedFilesU();
+	List<FileUploadDetailsEntity> getAllUploadedFilesP();
 }

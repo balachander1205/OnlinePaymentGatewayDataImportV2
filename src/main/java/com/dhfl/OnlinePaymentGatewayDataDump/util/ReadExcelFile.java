@@ -15,10 +15,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.dozer.DozerBeanMapper;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dhfl.OnlinePaymentGatewayDataDump.DHFLCustomerDataModel;
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
 import com.sun.media.jfxmedia.logging.Logger;
 
@@ -84,7 +82,8 @@ public class ReadExcelFile {
 					List<Cell> cells = new ArrayList<Cell>();
 					int lastColumn = Math.max(row.getLastCellNum(), 5);
 					for (int cn = 0; cn < lastColumn; cn++) {
-						Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						//Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS//_NULL);
+						Cell c = row.getCell(cn, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
 						cells.add(c);
 					}
 					Iterator<Cell> cellsInRow = cells.iterator();
@@ -188,8 +187,6 @@ public class ReadExcelFile {
 			Validator validator = new Validator();
 			for (Row row : sheet) {
 				String validationDesc = "";
-				DHFLCustomerDataModel dataModel = new DHFLCustomerDataModel();
-				DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
 				Row currentRow = row;
 				// skip header
 				if (rowNumber == 0) {
@@ -211,7 +208,8 @@ public class ReadExcelFile {
 					List<Cell> cells = new ArrayList<Cell>();
 					int lastColumn = Math.max(row.getLastCellNum(), 5);
 					for (int cn = 0; cn < lastColumn; cn++) {
-						Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						//Cell c = row.getCell(cn, org.apache.poi.ss.usermodel.Row.RETURN_BLANK_AS_NULL);
+						Cell c = row.getCell(cn, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
 						cells.add(c);
 					}
 					Iterator<Cell> cellsInRow = cells.iterator();
@@ -282,13 +280,9 @@ public class ReadExcelFile {
 						}
 						cellIdx++;
 					}
-					System.out.println("-------------------------");					
-					DHFLCustomerDataModel finalDataModel = dozerBeanMapper.map(tutorial, dataModel.getClass());
-					finalDataModel.setMessage(validationDesc);
-					finalDataModel.setStatus("");
-					//System.out.println(tutorial.toString()+"\n");
-					System.out.println(finalDataModel.getMessage()+"\n");
-					//System.out.println(finalDataModel);
+					System.out.println("-------------------------");
+					System.out.println(tutorial.toString());
+					System.out.println("Validation Desc="+validationDesc+"\n");
 					customers.add(tutorial);
 				}
 			}
