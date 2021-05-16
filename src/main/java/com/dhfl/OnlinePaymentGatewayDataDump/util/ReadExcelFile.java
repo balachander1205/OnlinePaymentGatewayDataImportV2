@@ -15,8 +15,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.dozer.DozerBeanMapper;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dhfl.OnlinePaymentGatewayDataDump.DHFLCustomerDataModel;
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
 import com.sun.media.jfxmedia.logging.Logger;
 
@@ -186,6 +188,8 @@ public class ReadExcelFile {
 			Validator validator = new Validator();
 			for (Row row : sheet) {
 				String validationDesc = "";
+				DHFLCustomerDataModel dataModel = new DHFLCustomerDataModel();
+				DozerBeanMapper dozerBeanMapper = new DozerBeanMapper();
 				Row currentRow = row;
 				// skip header
 				if (rowNumber == 0) {
@@ -278,9 +282,13 @@ public class ReadExcelFile {
 						}
 						cellIdx++;
 					}
-					System.out.println("-------------------------");
-					System.out.println(tutorial.toString()+"\n");
-					System.out.println(validationDesc+"\n");
+					System.out.println("-------------------------");					
+					DHFLCustomerDataModel finalDataModel = dozerBeanMapper.map(tutorial, dataModel.getClass());
+					finalDataModel.setMessage(validationDesc);
+					finalDataModel.setStatus("");
+					//System.out.println(tutorial.toString()+"\n");
+					System.out.println(finalDataModel.getMessage()+"\n");
+					//System.out.println(finalDataModel);
 					customers.add(tutorial);
 				}
 			}
