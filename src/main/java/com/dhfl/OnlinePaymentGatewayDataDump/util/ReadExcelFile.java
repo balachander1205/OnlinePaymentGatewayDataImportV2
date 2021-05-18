@@ -15,9 +15,11 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.dozer.DozerBeanMapper;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
+import com.dhfl.OnlinePaymentGatewayDataDump.entity.FileUploadValidationEntity;
 import com.sun.media.jfxmedia.logging.Logger;
 
 public class ReadExcelFile {
@@ -179,6 +181,7 @@ public class ReadExcelFile {
 			XSSFWorkbook workbook = new XSSFWorkbook(is);
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			List<DHFLCustomersEntity> customers = new ArrayList<DHFLCustomersEntity>();
+			List<FileUploadValidationEntity> validations = new ArrayList<>();
 			int rowNumber = 0;
 			System.out.println("Last Row Number " + sheet.getLastRowNum());
 			int headerCount = 0;
@@ -215,6 +218,7 @@ public class ReadExcelFile {
 					Iterator<Cell> cellsInRow = cells.iterator();
 							//currentRow.iterator();
 					DHFLCustomersEntity tutorial = new DHFLCustomersEntity();
+					FileUploadValidationEntity validation = new FileUploadValidationEntity();
 					int cellIdx = 0;
 					while (cellsInRow.hasNext()) {
 						Cell currentCell = cellsInRow.next();
@@ -232,47 +236,61 @@ public class ReadExcelFile {
 							}
 							validationDesc = validationDesc + validator.validateBRLoanCode(loanCode);
 							tutorial.setBrloancode(loanCode);
+							validation.setBrloancode(loanCode);
 							break;
 						case 1:
 							String appNo = getCellValueByType(currentCell);
 							validationDesc = validationDesc + validator.validateAppNo(appNo);
 							tutorial.setApplno(appNo);
+							validation.setApplno(appNo);
 							break;
 						case 2:
-							tutorial.setCustomername(getCellValueByType(currentCell));
+							String custName = getCellValueByType(currentCell);
+							tutorial.setCustomername(custName);
+							validation.setCustomername(custName);
 							break;
 						case 3:
 							Double mobileNo = new Double(getCellValueByType(currentCell));
 							validationDesc = validationDesc + validator.validateMobileNo(String.valueOf(mobileNo.longValue()));
 							tutorial.setMobileno(String.valueOf(mobileNo.longValue()));
+							validation.setMobileno(String.valueOf(mobileNo.longValue()));
 							break;
 						case 4:
 							break;
 						case 5:
-							tutorial.setTotalOverdueEMI((long) Double.parseDouble(getCellValueByType(currentCell)));
+							String totalOverDueEMI = getCellValueByType(currentCell);
+							tutorial.setTotalOverdueEMI((long) Double.parseDouble(totalOverDueEMI));
+							validation.setTotalOverdueEMI((long) Double.parseDouble(totalOverDueEMI));
 							break;
 						case 6:
-							tutorial.setMinimumOverdueAmount(
-									(long) Double.parseDouble(getCellValueByType(currentCell)));
+							String minimumOverdueAmount = getCellValueByType(currentCell);
+							tutorial.setMinimumOverdueAmount((long) Double.parseDouble(minimumOverdueAmount));
+							validation.setMinimumOverdueAmount((long) Double.parseDouble(minimumOverdueAmount));
 							break;
 						case 7:
 							String overdueBlankField = getCellValueByType(currentCell) != null
 							|| getCellValueByType(currentCell) != "" ? getCellValueByType(currentCell) : "0";
 							tutorial.setOverdueBlankField((long) Double.parseDouble(overdueBlankField));
+							validation.setOverdueBlankField((long) Double.parseDouble(overdueBlankField));
 							//tutorial.setTotalChargesAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
 							break;
 						case 8:
 							break;
 						case 9:
-							tutorial.setTotalChargesAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
+							String totalChargesAmount = getCellValueByType(currentCell);
+							tutorial.setTotalChargesAmount((long) Double.parseDouble(totalChargesAmount));
+							validation.setTotalChargesAmount((long) Double.parseDouble(totalChargesAmount));
 							break;
 						case 10:
-							tutorial.setMinimumChargeAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
+							String minimumChargeAmount = getCellValueByType(currentCell);
+							tutorial.setMinimumChargeAmount((long) Double.parseDouble(minimumChargeAmount));
+							validation.setMinimumChargeAmount((long) Double.parseDouble(minimumChargeAmount));
 							break;
 						case 11:
 							String chargeBlankField = getCellValueByType(currentCell) != null
 							|| getCellValueByType(currentCell) != "" ? getCellValueByType(currentCell) : "0";
 							tutorial.setChargeBlankField((long) Double.parseDouble(chargeBlankField));
+							validation.setChargeBlankField((long) Double.parseDouble(chargeBlankField));
 							//tutorial.setMinimumChargeAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
 							break;
 						default:
@@ -280,10 +298,14 @@ public class ReadExcelFile {
 						}
 						cellIdx++;
 					}
+					validation.setDescription(validationDesc);
 					System.out.println("-------------------------");
-					System.out.println(tutorial.toString());
-					System.out.println("Validation Desc="+validationDesc+"\n");
-					customers.add(tutorial);
+					System.out.println(validation.toString());
+					//System.out.println("Validation Desc="+validationDesc+"\n");
+					validations.add(validation);
+					if(validationDesc!=null && validationDesc.length()>0) {
+						customers.add(tutorial);
+					}
 				}
 			}
 			System.out.println("Same Headers="+Arrays.equals(HEADERs, headersArr));
