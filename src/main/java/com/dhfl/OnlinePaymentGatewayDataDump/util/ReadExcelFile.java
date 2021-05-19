@@ -305,9 +305,11 @@ public class ReadExcelFile {
 					validations.add(validation);
 					if(validationDesc!=null && validationDesc.length()>0) {
 						customers.add(tutorial);
-					}
+					}					
 				}
 			}
+			WriteToExcelFile excelFile = new WriteToExcelFile();
+			excelFile.writeExcelValidationToFile(validations);
 			System.out.println("Same Headers="+Arrays.equals(HEADERs, headersArr));
 			// workbook.close();
 			return customers;

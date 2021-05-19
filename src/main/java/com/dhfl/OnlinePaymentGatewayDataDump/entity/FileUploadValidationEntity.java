@@ -1,27 +1,41 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.entity;
 
-public class FileUploadValidationEntity {
-	public String description;
-	
+import io.github.millij.poi.ss.model.annotations.Sheet;
+import io.github.millij.poi.ss.model.annotations.SheetColumn;
+
+/*static String[] HEADERs = { "BrLoan Code", "Appl No", "Customer Name", "Mobile", "Overdue EMI", 
+ * "Total Overdue EMI",
+		"Minimum Overdue Amount", "Overdue Blank Field", 
+		"Charges", "Total Charges Amount", "Minimum Charge Amount",
+		"Charge Blank Fieldumn(Overdue Blank Field"" };*/
+@Sheet
+public class FileUploadValidationEntity {	
+	@SheetColumn("BrLoan Code")
 	private String brloancode;
-
+	@SheetColumn("Appl No")
 	private String applno;
-
+	@SheetColumn("Customer Name")
 	private String customername;
-
+	@SheetColumn("Mobile")
 	private String mobileno;
-
-	private Long TotalOverdueEMI;
-
-	private Long MinimumOverdueAmount;
-
-	private Long OverdueBlankField;
-
-	private Long TotalChargesAmount;
-
-	private Long MinimumChargeAmount;
-	
-	private Long ChargeBlankField;
+	@SheetColumn("Overdue EMI")
+	private Long overdueEMI;
+	@SheetColumn("Total Overdue EMI")
+	private Long totalOverdueEMI;
+	@SheetColumn("Minimum Overdue Amount")
+	private Long minimumOverdueAmount;
+	@SheetColumn("Overdue Blank Field")
+	private Long overdueBlankField;
+	@SheetColumn("Charges")
+	private Long charges;
+	@SheetColumn("Total Charges Amount")
+	private Long totalChargesAmount;
+	@SheetColumn("Minimum Charge Amount")
+	private Long minimumChargeAmount;
+	@SheetColumn("Charge Blank Field")
+	private Long chargeBlankField;
+	@SheetColumn("Description")
+	public String description;
 
 	public String getDescription() {
 		return description;
@@ -64,51 +78,51 @@ public class FileUploadValidationEntity {
 	}
 
 	public Long getTotalOverdueEMI() {
-		return TotalOverdueEMI;
+		return totalOverdueEMI;
 	}
 
 	public void setTotalOverdueEMI(Long totalOverdueEMI) {
-		TotalOverdueEMI = totalOverdueEMI;
+		totalOverdueEMI = totalOverdueEMI;
 	}
 
 	public Long getMinimumOverdueAmount() {
-		return MinimumOverdueAmount;
+		return minimumOverdueAmount;
 	}
 
 	public void setMinimumOverdueAmount(Long minimumOverdueAmount) {
-		MinimumOverdueAmount = minimumOverdueAmount;
+		minimumOverdueAmount = minimumOverdueAmount;
 	}
 
 	public Long getOverdueBlankField() {
-		return OverdueBlankField;
+		return overdueBlankField;
 	}
 
 	public void setOverdueBlankField(Long overdueBlankField) {
-		OverdueBlankField = overdueBlankField;
+		overdueBlankField = overdueBlankField;
 	}
 
 	public Long getTotalChargesAmount() {
-		return TotalChargesAmount;
+		return totalChargesAmount;
 	}
 
 	public void setTotalChargesAmount(Long totalChargesAmount) {
-		TotalChargesAmount = totalChargesAmount;
+		totalChargesAmount = totalChargesAmount;
 	}
 
 	public Long getMinimumChargeAmount() {
-		return MinimumChargeAmount;
+		return minimumChargeAmount;
 	}
 
 	public void setMinimumChargeAmount(Long minimumChargeAmount) {
-		MinimumChargeAmount = minimumChargeAmount;
+		minimumChargeAmount = minimumChargeAmount;
 	}
 
 	public Long getChargeBlankField() {
-		return ChargeBlankField;
+		return chargeBlankField;
 	}
 
 	public void setChargeBlankField(Long chargeBlankField) {
-		ChargeBlankField = chargeBlankField;
+		chargeBlankField = chargeBlankField;
 	}
 
 	@Override

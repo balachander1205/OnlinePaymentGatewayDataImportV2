@@ -2,6 +2,7 @@ package com.dhfl.OnlinePaymentGatewayDataDump.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -10,6 +11,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.dhfl.OnlinePaymentGatewayDataDump.entity.FileUploadValidationEntity;
+
+import io.github.millij.poi.ss.writer.SpreadsheetWriter;
 
 //import statements
 public class WriteToExcelFile {
@@ -56,11 +61,15 @@ public class WriteToExcelFile {
 		}
 	}
 	
-	public void writeExcelValidationToFile() {
+	public void writeExcelValidationToFile(List<FileUploadValidationEntity> validations) {
 		try {
-			
+			System.out.println("Started writing to excel file.");
+			SpreadsheetWriter writer = new SpreadsheetWriter("E:\\DHFL\\upload\\validation.xlsx");
+			writer.addSheet(FileUploadValidationEntity.class, validations);
+			writer.write();
+			System.out.println("Completed writing to excel file.");
 		}catch (Exception e) {
-			e.printStackTrace();
+			e.printStackTrace(System.out);
 		}
 	}
 }

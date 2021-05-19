@@ -8,13 +8,13 @@ public class Validator {
 		String message = "";
 		boolean specialChars = validateSpecialChars(brLoanCode);
 		if (brLoanCode.length() < 11) {
-			message = message + "[ BR LoanCode is less than 11 digits/chars ] ";
+			message = message + "| BR LoanCode is less than 11 digits/chars | ";
 		}if (!specialChars) {
 			if (isConsecutive(brLoanCode)) {
-				message = message + "\n[ BR LoanCode is having consecutive digits/chars ] ";
+				message = message + "\n| BR LoanCode is having consecutive digits/chars | ";
 			}
 		}if (specialChars) {
-			message = message + "\n[ BR LoanCode has special chars ] ";
+			message = message + "\n| BR LoanCode has special chars | ";
 		}
 		return message;
 	}
@@ -23,13 +23,13 @@ public class Validator {
 		String message = "";
 		boolean specialChars = validateSpecialChars(appNo);
 		if (appNo.length() < 8) {
-			message = message + "[ Application number is less than 8 digits/chars ] ";
+			message = message + "| Application number is less than 8 digits/chars | ";
 		}if (!specialChars) {
 			if (isConsecutive(appNo)) {
-				message = message + "\n[ Application number is having consecutive digits/chars ] ";
+				message = message + "\n| Application number is having consecutive digits/chars | ";
 			}
 		}if (specialChars) {
-			message = message + "\n[ Application Number has special chars ] ";
+			message = message + "\n| Application Number has special chars | ";
 		}
 		return message;
 	}
@@ -38,15 +38,15 @@ public class Validator {
 		String message = "";
 		boolean specialChars = validateSpecialChars(mobileNo);
 		if (mobileNo.length() < 10) {
-			message = message + "[ Mobile number is less than 10 digits ] ";
+			message = message + "| Mobile number is less than 10 digits | ";
 		}if (specialChars) {
-			message = message + "\n[ Mobile number is having special chars ] ";
+			message = message + "\n| Mobile number is having special chars | ";
 		}if (!specialChars) {
 			if (isConsecutive(mobileNo)) {
-				message = message + "\n[ Mobile number is having consecutive digits ] ";
+				message = message + "\n| Mobile number is having consecutive digits | ";
 			}
 		}if(isMobileNoValid(mobileNo)) {
-			message = message + "\n[ Mobile number is Invalid ] ";
+			message = message + "\n| Mobile number is Invalid | ";
 		}
 		return message;
 	}
