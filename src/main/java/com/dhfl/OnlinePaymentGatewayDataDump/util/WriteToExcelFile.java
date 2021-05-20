@@ -67,7 +67,7 @@ public class WriteToExcelFile {
 			long CUR_DATE = System.currentTimeMillis();
 			String fileName = String.valueOf(CUR_DATE);
 			System.out.println("Started writing to excel file="+fileName);
-			SpreadsheetWriter writer = new SpreadsheetWriter("F:\\Freelance\\DHFL\\docs\\"+fileName+".xlsx");
+			SpreadsheetWriter writer = new SpreadsheetWriter("E:\\DHFL\\processed\\"+fileName+".xlsx");
 			writer.addSheet(FileUploadValidationEntity.class, validations);
 			writer.write();
 			System.out.println("Completed writing to excel file="+fileName);
