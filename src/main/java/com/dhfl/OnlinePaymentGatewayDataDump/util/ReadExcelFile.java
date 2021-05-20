@@ -260,18 +260,18 @@ public class ReadExcelFile {
 						case 5:
 							String totalOverDueEMI = getCellValueByType(currentCell);
 							tutorial.setTotalOverdueEMI((long) Double.parseDouble(totalOverDueEMI));
-							validation.setTotalOverdueEMI((long) Double.parseDouble(totalOverDueEMI));
+							validation.setTotalOverdueEMI(String.valueOf(Double.parseDouble(totalOverDueEMI)));
 							break;
 						case 6:
 							String minimumOverdueAmount = getCellValueByType(currentCell);
 							tutorial.setMinimumOverdueAmount((long) Double.parseDouble(minimumOverdueAmount));
-							validation.setMinimumOverdueAmount((long) Double.parseDouble(minimumOverdueAmount));
+							validation.setMinimumOverdueAmount(minimumOverdueAmount);
 							break;
 						case 7:
 							String overdueBlankField = getCellValueByType(currentCell) != null
 							|| getCellValueByType(currentCell) != "" ? getCellValueByType(currentCell) : "0";
 							tutorial.setOverdueBlankField((long) Double.parseDouble(overdueBlankField));
-							validation.setOverdueBlankField((long) Double.parseDouble(overdueBlankField));
+							validation.setOverdueBlankField(overdueBlankField);
 							//tutorial.setTotalChargesAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
 							break;
 						case 8:
@@ -279,18 +279,18 @@ public class ReadExcelFile {
 						case 9:
 							String totalChargesAmount = getCellValueByType(currentCell);
 							tutorial.setTotalChargesAmount((long) Double.parseDouble(totalChargesAmount));
-							validation.setTotalChargesAmount((long) Double.parseDouble(totalChargesAmount));
+							validation.setTotalChargesAmount(totalChargesAmount);
 							break;
 						case 10:
 							String minimumChargeAmount = getCellValueByType(currentCell);
 							tutorial.setMinimumChargeAmount((long) Double.parseDouble(minimumChargeAmount));
-							validation.setMinimumChargeAmount((long) Double.parseDouble(minimumChargeAmount));
+							validation.setMinimumChargeAmount(minimumChargeAmount);
 							break;
 						case 11:
 							String chargeBlankField = getCellValueByType(currentCell) != null
 							|| getCellValueByType(currentCell) != "" ? getCellValueByType(currentCell) : "0";
 							tutorial.setChargeBlankField((long) Double.parseDouble(chargeBlankField));
-							validation.setChargeBlankField((long) Double.parseDouble(chargeBlankField));
+							validation.setChargeBlankField(chargeBlankField);
 							//tutorial.setMinimumChargeAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
 							break;
 						default:

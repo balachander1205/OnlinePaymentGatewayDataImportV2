@@ -1,5 +1,9 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.entity;
 
+import com.poiji.annotation.ExcelCell;
+import com.poiji.annotation.ExcelCellName;
+import com.poiji.annotation.ExcelRow;
+
 import io.github.millij.poi.ss.model.annotations.Sheet;
 import io.github.millij.poi.ss.model.annotations.SheetColumn;
 
@@ -9,32 +13,45 @@ import io.github.millij.poi.ss.model.annotations.SheetColumn;
 		"Charges", "Total Charges Amount", "Minimum Charge Amount",
 		"Charge Blank Fieldumn(Overdue Blank Field"" };*/
 @Sheet
-public class FileUploadValidationEntity {	
-	@SheetColumn("BrLoan Code")
+public class FileUploadValidationModel {
+	@ExcelCell(0)
+	@ExcelCellName("BrLoan Code")
 	private String brloancode;
-	@SheetColumn("Appl No")
+	@ExcelCell(1)
+	@ExcelCellName("Appl No")
 	private String applno;
-	@SheetColumn("Customer Name")
+	@ExcelCell(2)
+	@ExcelCellName("Customer Name")
 	private String customername;
-	@SheetColumn("Mobile")
+	@ExcelCell(3)
+	@ExcelCellName("Mobile")
 	private String mobileno;
-	//@SheetColumn("Overdue EMI")
+	@ExcelCell(4)
+	@ExcelCellName("Overdue EMI")
 	private String overdueEMI;
-	@SheetColumn("Total Overdue EMI")
+	@ExcelCell(5)
+	@ExcelCellName("Total Overdue EMI")
 	private String totalOverdueEMI;
-	@SheetColumn("Minimum Overdue Amount")
+	@ExcelCell(6)
+	@ExcelCellName("Minimum Overdue Amount")
 	private String minimumOverdueAmount;
-	@SheetColumn("Overdue Blank Field")
+	@ExcelCell(7)
+	@ExcelCellName("Overdue Blank Field")
 	private String overdueBlankField;
-	//@SheetColumn("Charges")
+	@ExcelCell(8)
+	@ExcelCellName("Charges")
 	private String charges;
-	@SheetColumn("Total Charges Amount")
+	@ExcelCell(9)
+	@ExcelCellName("Total Charges Amount")
 	private String totalChargesAmount;
-	@SheetColumn("Minimum Charge Amount")
+	@ExcelCell(10)
+	@ExcelCellName("Minimum Charge Amount")
 	private String minimumChargeAmount;
-	@SheetColumn("Charge Blank Field")
+	@ExcelCell(11)
+	@ExcelCellName("Charge Blank Field")
 	private String chargeBlankField;
-	@SheetColumn("Description")
+	@ExcelCell(12)
+	@ExcelCellName("Description")
 	public String description;
 	
 	public String getBrloancode() {

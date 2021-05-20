@@ -23,7 +23,7 @@ public class Validator {
 		String message = "";
 		boolean specialChars = validateSpecialChars(appNo);
 		if (appNo.length() < 8) {
-			message = message + "| Application number is less than 8 digits/chars | ";
+			message = message + "\n| Application number is less than 8 digits/chars | ";
 		}if (!specialChars) {
 			if (isConsecutive(appNo)) {
 				message = message + "\n| Application number is having consecutive digits/chars | ";
@@ -38,7 +38,7 @@ public class Validator {
 		String message = "";
 		boolean specialChars = validateSpecialChars(mobileNo);
 		if (mobileNo.length() < 10) {
-			message = message + "| Mobile number is less than 10 digits | ";
+			message = message + "\n| Mobile number is less than 10 digits | ";
 		}if (specialChars) {
 			message = message + "\n| Mobile number is having special chars | ";
 		}if (!specialChars) {
