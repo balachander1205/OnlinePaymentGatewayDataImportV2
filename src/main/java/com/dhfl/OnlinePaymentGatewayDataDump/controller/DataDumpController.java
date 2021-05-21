@@ -15,6 +15,10 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -185,5 +189,23 @@ public class DataDumpController {
 		redirectAttributes.addFlashAttribute("updatedRows", updatedRows);
 		redirectAttributes.addFlashAttribute("insertedRows", insertedRows);
 		return "redirect:/data/uploadStatus";
+	}
+	
+	@GetMapping("/download")
+    public ResponseEntity downloadFile1(
+			@RequestParam("fileName") String fileName) throws Exception {
+
+		System.out.println("fileName: " + fileName);
+		File file = new File("E:\\DHFL/processed/" + fileName+".xlsx");
+		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+		return ResponseEntity.ok()
+				// Content-Disposition
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+				// Content-Type
+				.contentType(MediaType.APPLICATION_OCTET_STREAM)
+				// Contet-Length
+				.contentLength(file.length()) //
+				.body(resource);
 	}
 }
