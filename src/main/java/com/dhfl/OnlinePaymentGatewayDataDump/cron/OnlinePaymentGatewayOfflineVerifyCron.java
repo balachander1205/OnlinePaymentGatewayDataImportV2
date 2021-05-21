@@ -158,4 +158,14 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 			e.printStackTrace();
 		}
 	}
+	// Send processed file in mail attachment
+	@Scheduled(cron = "10 * * * * ?")
+	public void sendMailCron() {
+		try {
+			
+		} catch (Exception e) {
+			logger.debug("[ Xception@sendMailCron=] "+e);
+			e.printStackTrace(System.out);
+		}
+	}
 }
