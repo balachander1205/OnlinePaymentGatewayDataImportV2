@@ -303,7 +303,7 @@ public class ReadExcelFile {
 					System.out.println(validation.toString());
 					//System.out.println("Validation Desc="+validationDesc+"\n");
 					validations.add(validation);
-					if(validationDesc==null && validationDesc.length()<0) {
+					if(validationDesc!=null && validationDesc.length()>0) {
 						customers.add(tutorial);
 					}					
 				}
