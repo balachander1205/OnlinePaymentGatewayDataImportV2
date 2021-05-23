@@ -2,7 +2,6 @@ package com.dhfl.OnlinePaymentGatewayDataDump.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -62,15 +61,13 @@ public class WriteToExcelFile {
 		}
 	}
 	
-	public void writeExcelValidationToFile(List<FileUploadValidationEntity> validations) {
+	public void writeExcelValidationToFile(List<FileUploadValidationEntity> validations, String file_ref_num) {
 		try {
-			long CUR_DATE = System.currentTimeMillis();
-			String fileName = String.valueOf(CUR_DATE);
-			System.out.println("Started writing to excel file="+fileName);
-			SpreadsheetWriter writer = new SpreadsheetWriter("E:\\DHFL\\processed\\"+fileName+".xlsx");
+			System.out.println("Started writing to excel file="+file_ref_num);
+			SpreadsheetWriter writer = new SpreadsheetWriter("E:\\DHFL\\processed\\"+file_ref_num+".xlsx");
 			writer.addSheet(FileUploadValidationEntity.class, validations);
 			writer.write();
-			System.out.println("Completed writing to excel file="+fileName);
+			System.out.println("Completed writing to excel file="+file_ref_num);
 		}catch (Exception e) {
 			e.printStackTrace(System.out);
 		}

@@ -19,9 +19,7 @@ import com.dhfl.OnlinePaymentGatewayDataDump.service.DHFLCustomersInter;
 import com.dhfl.OnlinePaymentGatewayDataDump.service.FileUploadDetailsInter;
 import com.dhfl.OnlinePaymentGatewayDataDump.test.ReadExcel;
 import com.dhfl.OnlinePaymentGatewayDataDump.util.ReadExcelFile;
-import com.ibm.db2.jcc.am.p;
-
-import javassist.bytecode.stackmap.BasicBlock.Catch;
+import com.dhfl.OnlinePaymentGatewayDataDump.util.SendMail;
 
 @Component
 public class OnlinePaymentGatewayOfflineVerifyCron {
@@ -61,7 +59,7 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 					fileUploadDetailsInter.updateFileStatusP(file_ref_num);			
 					System.out.println("File Process Started.......(~|~)");
 					final long start = System.currentTimeMillis();
-					processUploadedFile(uploadFileName);
+					processUploadedFile(uploadFileName, file_ref_num);
 					System.out.println("File Process Completed ('-').......");
 					long executioTime = System.currentTimeMillis() - start;
 					System.out.println("Elapsed time milliseconds: "+(executioTime));
@@ -78,7 +76,7 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 		LOG.info("Average value is 0::--->>"+count++);
 	}
 	
-	public void processUploadedFile(String uploadFileName) {
+	public void processUploadedFile(String uploadFileName, String file_ref_num) {
 		int insertedRows = 0;
 		int updatedRows = 0;
 		String message = "";
@@ -91,7 +89,7 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 				// List<DHFLCustomersEntity> customers =
 				// ExcelHelper.excelToTutorials(targetStream);
 				//List<DHFLCustomersEntity> customers = ReadExcelFile.excelToTutorials(targetStream);
-				List<DHFLCustomersEntity> customers = ReadExcelFile.parseExcelAndValidate(targetStream);
+				List<DHFLCustomersEntity> customers = ReadExcelFile.parseExcelAndValidate(targetStream, file_ref_num);
 				int totalRows = customers != null || customers.size() > 0 ? customers.size() : 0;
 				try {
 					System.out.println("Customers Size====" + customers.size());
@@ -162,7 +160,22 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 	@Scheduled(cron = "10 * * * * ?")
 	public void sendMailCron() {
 		try {
-			
+			System.out.println("CRON:Started sending mail...");
+			logger.debug("CRON:Started sending mail...");
+			SendMail sendMail = new SendMail();
+			List<FileUploadDetailsEntity> filesCompleted = fileUploadDetailsInter.getAllUploadedFilesC();
+			for(FileUploadDetailsEntity file : filesCompleted) {
+				String fileRefNum = file.getFile_ref_num();
+				String email = file.getEmail_id()!=null?file.getEmail_id():"";
+				if(email!=null && email!="" && email.contains("@")) {
+					logger.debug("CRON:Sending mail="+email+" File RefNo="+fileRefNum);
+					// Sending mail
+					sendMail.sendEmailWithAttachment(email, fileRefNum);
+					// update status='E' in DB after mail sent
+					int count = fileUploadDetailsInter.updateFileStatusE(fileRefNum);
+					logger.debug("CRON:Updated="+count+" End of Sending mail="+email+" File RefNo="+fileRefNum);
+				}
+			}
 		} catch (Exception e) {
 			logger.debug("[ Xception@sendMailCron=] "+e);
 			e.printStackTrace(System.out);

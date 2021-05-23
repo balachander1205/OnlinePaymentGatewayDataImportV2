@@ -34,7 +34,7 @@ public class ReadExcelFile {
 		FileInputStream fis = new FileInputStream(
 				new File("F:\\Freelance\\DHFL\\docs\\Click_To_Pay_Fields_15_06_2020-edited.xlsx"));
 		// creating workbook instance that refers to .xls file
-		List<DHFLCustomersEntity> customers = ReadExcelFile.parseExcelAndValidate(fis);
+		List<DHFLCustomersEntity> customers = ReadExcelFile.parseExcelAndValidate(fis, "validationsFile");
 		for (DHFLCustomersEntity customer : customers) {
 			System.out.println("Name=" + customer.getCustomername() + " LoanCode=" + customer.getBrloancode()
 					+ " AppNo=" + customer.getApplno() + " Total OverDue=" + customer.getTotalOverdueEMI()
@@ -175,7 +175,7 @@ public class ReadExcelFile {
 	 * parse excel file with validations - 02/05/2021
 	 * 
 	 * */
-	public static List<DHFLCustomersEntity> parseExcelAndValidate(InputStream is) {
+	public static List<DHFLCustomersEntity> parseExcelAndValidate(InputStream is, String file_ref_num) {
 		try {
 			// creating workbook instance that refers to .xls file
 			XSSFWorkbook workbook = new XSSFWorkbook(is);
@@ -309,7 +309,7 @@ public class ReadExcelFile {
 				}
 			}
 			WriteToExcelFile excelFile = new WriteToExcelFile();
-			excelFile.writeExcelValidationToFile(validations);
+			excelFile.writeExcelValidationToFile(validations, file_ref_num);
 			System.out.println("Same Headers="+Arrays.equals(HEADERs, headersArr));
 			// workbook.close();
 			return customers;

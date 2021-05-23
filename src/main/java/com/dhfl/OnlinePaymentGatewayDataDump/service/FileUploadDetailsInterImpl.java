@@ -37,4 +37,14 @@ public class FileUploadDetailsInterImpl implements FileUploadDetailsInter{
 	public List<FileUploadDetailsEntity> getAllUploadedFilesP() {
 		return fileUploadServiceRepo.getAllUploadedFilesP();
 	}
+
+	@Override
+	public int updateFileStatusE(String file_ref_num) {
+		return fileUploadServiceRepo.updateFileStatusE(file_ref_num);
+	}
+
+	@Override
+	public List<FileUploadDetailsEntity> getAllUploadedFilesC() {
+		return fileUploadServiceRepo.getAllUploadedFilesC();
+	}
 }

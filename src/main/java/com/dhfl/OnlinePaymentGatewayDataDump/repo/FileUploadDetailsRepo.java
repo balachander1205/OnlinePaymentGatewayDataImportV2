@@ -23,6 +23,9 @@ public interface FileUploadDetailsRepo extends CrudRepository<FileUploadDetailsE
 	@Query("select uploadData from FileUploadDetailsEntity uploadData where uploadData.file_status = 'U'")
 	FileUploadDetailsEntity getUploadedFile();
 	
+	@Query("select uploadData from FileUploadDetailsEntity uploadData where uploadData.file_status = 'C'")
+	List<FileUploadDetailsEntity> getAllUploadedFilesC();
+	
 	@Transactional
 	@Modifying
 	@Query("update FileUploadDetailsEntity uploadData set file_status='P' where uploadData.file_ref_num =:file_ref_num")
@@ -32,4 +35,9 @@ public interface FileUploadDetailsRepo extends CrudRepository<FileUploadDetailsE
 	@Modifying
 	@Query("update FileUploadDetailsEntity uploadData set file_status='C' where uploadData.file_ref_num =:file_ref_num")
 	int updateFileStatusC(@Param("file_ref_num") String file_ref_num);
+	
+	@Transactional
+	@Modifying
+	@Query("update FileUploadDetailsEntity uploadData set file_status='E' where uploadData.file_ref_num =:file_ref_num")
+	int updateFileStatusE(@Param("file_ref_num") String file_ref_num);
 }

@@ -1,40 +1,35 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sun.xml.internal.ws.util.ByteArrayDataSource;
-
-import org.json.JSONObject;
+import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.*;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-import java.util.TimeZone;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SendMail {
 	static Logger logger = LoggerFactory.getLogger(SendMail.class);
 
 	public static void main(String[] args) {
 		//sendMail();
-		sendEmailWithAttachment();
+		sendEmailWithAttachment("digumarthi.bala@gmail.com", "7895826431");
 	}
 
 	public static void sendMail() {
 		try {
-			TimeZone timeZone = TimeZone.getTimeZone("Asia/Calcutta");
-			String dateFormat = "MMMM dd,yyyy G"; // MMMM dd,yyyy G
-			String timeFormat = "hh:mm:ss.SSS a zzzz";
-			String dayFormat = "EEEEEE";
-
 			String to = "digumarthi.bala@gmail.com";
 			String subject = "Uploaded data validation report";
 			String msg = "<html>\n" + "<style>\n" + "#header-main {\n" + "    background-color:black;\n"
@@ -111,13 +106,11 @@ public class SendMail {
 		}
 	}
 
-	public static void sendEmailWithAttachment() {
-		String to = "digumarthi.bala@gmail.com";
-		System.out.println(
-				"====================CreditPdUtil.sendEmail()::content::and email id::");
+	public static void sendEmailWithAttachment(String email, String fileRefNum) {
+		logger.debug("SendMail.sendEmailWithAttachment():="+email+ " File Reference Number="+fileRefNum);
+		System.out.println("SendMail.sendEmailWithAttachment():="+email+ " File Reference Number="+fileRefNum);
 		// Sender's email ID needs to be mentioned
 		String from = "noreply@dhfl.com";
-
 		// Assuming you are sending email from localhost
 		String host = "10.200.10.47";
 		String port = "25";
@@ -125,7 +118,6 @@ public class SendMail {
 		//String port = PropertyReader.getProperty("mailPort");
 		// Get system properties
 		Properties properties = System.getProperties();
-
 		// Setup mail server
 		properties.setProperty("mail.smtp.host", host);
 		properties.setProperty("mail.smtp.port", port);
@@ -133,28 +125,43 @@ public class SendMail {
 		// javax.mail.Session session
 		// =javax.mail.Session.getDefaultInstance(properties);
 		Session session = Session.getDefaultInstance(properties);
-
+		String body = "<html><title>DHFL</title><body>"
+				+ "<p>Dear User,<br><br>File upload has completed with below refrenece number. "
+				+ "Please find the uploaded status report in the below link.<br><br>"
+				+ "Refrence Number : " + fileRefNum +"<br>"
+				+ "<a href='http://clicktopay.dhfl.com/data/download?fileName="+fileRefNum+"' target='_blank'>Click to download report.</a><br><br>"
+				+ "This is a system generated e-mail and please do not reply.<br><br>"
+				+ "Warm regards,<br>"
+				+ "DHFL Administrator<br><br>"
+				+ "DISCLAIMER: The contents of this e-mail and any attachment(s) are confidential and intended for the named recipient(s) only. "
+				+ "It shall not attach any liability on the originator or DHFL or its affiliates. "
+				+ "Any views or opinions presented in this email are solely those of the author "
+				+ "and may not necessarily reflect the opinions of DHFL or its affiliates. "
+				+ "Any form of reproduction, dissemination, copying, disclosure, modification, "
+				+ "distribution and / or publication of this message without the prior written "
+				+ "consent of the author of this e-mail is strictly prohibited. "
+				+ "If you have received this email in error please delete it and notify the sender immediately. "
+				+ "Before opening any mail and attachments please check them for viruses and defect."
+				+ "</p></body></html>";
 		try {
 			// Create a default MimeMessage object.
 			MimeMessage message = new MimeMessage(session);
 			// Set From: header field of the header.
 			message.setFrom(new InternetAddress(from));
 			// Set To: header field of the header.
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
 			// set CC mail ids
 			// message.addRecipient(Message.RecipientType.CC,new InternetAddress(emailid));
-			message.addRecipients(Message.RecipientType.CC, to);
+			message.addRecipients(Message.RecipientType.CC, email);
 			// Set Subject: header field
-			message.setSubject("Hello wolrd");
+			message.setSubject(fileRefNum+" - File Upload Status Report.");
 			// Now set the actual message
 			// message.setText("This is actual message");
 			// Create the message part
 			BodyPart messageBodyPart = new MimeBodyPart();
-
 			// Now set the actual message
-			// messageBodyPart.setText(MessageFormat.format(PropertyReader.getProperty("otpVerifyEmp"),
-			// "revatis", "1234"));
-			messageBodyPart.setContent("Hello world", "text/html");
+			//messageBodyPart.setText("");
+			messageBodyPart.setContent(body, "text/html");
 			// Create a multipar message
 			Multipart multipart = new MimeMultipart();
 
@@ -177,16 +184,14 @@ public class SendMail {
 			// messageBodyPart.setFileName("google.png");
 			// messageBodyPart.setFileName(filename);
 			multipart.addBodyPart(messageBodyPart);
-
 			// Send the complete message parts
 			message.setContent(multipart);
 			// message.setContent(content, "text/html");
 			// Send message
 			Transport.send(message);
-			System.out.println("Sent message successfully....");
-		} catch (MessagingException mex) {
-			mex.printStackTrace();
-		} catch (Exception e) {
+			logger.debug(":Sent message successfully....="+fileRefNum);
+			System.out.println(":Sent message successfully....="+fileRefNum);
+		}  catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
