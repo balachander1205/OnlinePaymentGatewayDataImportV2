@@ -51,42 +51,99 @@ public class Validator {
 		return message;
 	}
 
-	public boolean validateOverDueEMIAmount() {
-		return false;
+	public String validateOverDueEMIAmount(String amount) {
+		String message = "";
+		if(amount!=null && amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| OverDueEMIAmount contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
-	public boolean validateTotalOverDueEMIAmount() {
-		return false;
+	public String validateTotalOverDueEMIAmount(String amount) {
+		String message = "";
+		if(amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| TotalOverDueEMIAmount contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
-	public boolean validateMinOverDueEMIAmount() {
-		return false;
+	public String validateMinOverDueEMIAmount(String amount) {
+		String message = "";
+		if(amount!=null && amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| MinOverDueEMIAmount contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
-	public boolean validateOverBlankField() {
-		return false;
+	public String validateOverDueBlankField(String amount) {
+		String message = "";
+		if(amount!=null && amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| OverDueBlankField contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
-	public boolean validateCharges() {
-		return false;
+	public String validateCharges(String amount) {
+		String message = "";
+		if(amount!=null && amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| Charges contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
-	public boolean validateTotalChargesAmount() {
-		return false;
+	public String validateTotalChargesAmount(String amount) {
+		String message = "";
+		if(amount!=null && amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| TotalChargesAmount contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
-	public boolean validateMinChargesAmount() {
-		return false;
+	public String validateMinChargesAmount(String amount) {
+		String message = "";
+		if(amount!=null && amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| MinChargesAmount contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
-	public boolean validateChargesBlankField() {
-		return false;
+	public String validateChargesBlankField(String amount) {
+		String message = "";
+		if(amount!=null && amount.contains(".")) {
+			String decAmount[] = amount.split(".");
+			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+				message = message + "\n| ChargesBlankField contains decimal value | ";
+			}
+		}
+		return message;
 	}
 
 	/*
 	 * validateSpecialChars
 	 * @param text
-	 * @return -- Method to validate text string for special characters.
+	 * @return 
+	 * -- Method to validate text string for special characters.
 	 */
 	public static boolean validateSpecialChars(String text) {
 		Pattern pattern = Pattern.compile("[a-zA-Z0-9]*");
