@@ -64,8 +64,10 @@ public class Validator {
 
 	public String validateTotalOverDueEMIAmount(String amount) {
 		String message = "";
-		if(amount.contains(".")) {
+		if(amount!=null && amount.contains(".")) {
 			String decAmount[] = amount.split(".");
+			System.out.println("validateTotalOverDueEMIAmount:Amount="+amount);
+			System.out.println("validateTotalOverDueEMIAmount:Amount="+decAmount[0]+" decimal="+decAmount);
 			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
 				message = message + "\n| TotalOverDueEMIAmount contains decimal value | ";
 			}

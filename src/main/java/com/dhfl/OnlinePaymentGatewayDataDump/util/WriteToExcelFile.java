@@ -2,6 +2,7 @@ package com.dhfl.OnlinePaymentGatewayDataDump.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -63,12 +64,19 @@ public class WriteToExcelFile {
 	
 	public void writeExcelValidationToFile(List<FileUploadValidationEntity> validations, String file_ref_num) {
 		try {
+			String[] HEADERs = { "BrLoan Code", "Appl No", "Customer Name", "Mobile", "Overdue EMI",		
+				 "Total Overdue EMI",
+					"Minimum Overdue Amount", "Overdue Blank Field", 
+					"Charges", "Total Charges Amount", "Minimum Charge Amount",
+					"Charge Blank Fieldumn(Overdue Blank Field", "Description" };
+			List<String> sheetHeaders = Arrays.asList(HEADERs);
 			System.out.println("Started writing to excel file="+file_ref_num);
 			SpreadsheetWriter writer = new SpreadsheetWriter("E:\\DHFL\\processed\\"+file_ref_num+".xlsx");
-			writer.addSheet(FileUploadValidationEntity.class, validations);
+			writer.addSheet(FileUploadValidationEntity.class, validations, sheetHeaders);
 			writer.write();
 			System.out.println("Completed writing to excel file="+file_ref_num);
 		}catch (Exception e) {
+			
 			e.printStackTrace(System.out);
 		}
 	}

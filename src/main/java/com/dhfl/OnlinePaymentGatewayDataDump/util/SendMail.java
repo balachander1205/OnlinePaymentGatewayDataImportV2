@@ -133,15 +133,6 @@ public class SendMail {
 				+ "This is a system generated e-mail and please do not reply.<br><br>"
 				+ "Warm regards,<br>"
 				+ "DHFL Administrator<br><br>"
-				+ "DISCLAIMER: The contents of this e-mail and any attachment(s) are confidential and intended for the named recipient(s) only. "
-				+ "It shall not attach any liability on the originator or DHFL or its affiliates. "
-				+ "Any views or opinions presented in this email are solely those of the author "
-				+ "and may not necessarily reflect the opinions of DHFL or its affiliates. "
-				+ "Any form of reproduction, dissemination, copying, disclosure, modification, "
-				+ "distribution and / or publication of this message without the prior written "
-				+ "consent of the author of this e-mail is strictly prohibited. "
-				+ "If you have received this email in error please delete it and notify the sender immediately. "
-				+ "Before opening any mail and attachments please check them for viruses and defect."
 				+ "</p></body></html>";
 		try {
 			// Create a default MimeMessage object.
@@ -169,7 +160,7 @@ public class SendMail {
 			multipart.addBodyPart(messageBodyPart);
 
 			// Part two is attachment
-			messageBodyPart = new MimeBodyPart();
+			//messageBodyPart = new MimeBodyPart();
 			// String filename = "F:/Credit PD/ireport/test report/abc.pdf";
 			
 			/*InputStream is = ftpClient.retrieveFileStream(attPath);
@@ -183,16 +174,16 @@ public class SendMail {
 			// URL("http://www.google.co.in/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png")));
 			// messageBodyPart.setFileName("google.png");
 			// messageBodyPart.setFileName(filename);
-			multipart.addBodyPart(messageBodyPart);
+			//multipart.addBodyPart(messageBodyPart);
 			// Send the complete message parts
 			message.setContent(multipart);
+			message.saveChanges();
 			// message.setContent(content, "text/html");
 			// Send message
 			Transport.send(message);
 			logger.debug(":Sent message successfully....="+fileRefNum);
 			System.out.println(":Sent message successfully....="+fileRefNum);
 		}  catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

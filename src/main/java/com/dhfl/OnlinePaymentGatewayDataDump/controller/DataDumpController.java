@@ -100,7 +100,7 @@ public class DataDumpController {
 			System.out.println("UPLOADED EMAILID="+email);
 			System.out.println("File Name==>>"+UPLOADED_FOLDER + FNAME+"_"+file.getOriginalFilename());
 			String file_report_path = UPLOADED_FOLDER + FNAME+"_"+file.getOriginalFilename();
-			redirectAttributes.addFlashAttribute("message", "File Uploaded successfully, report will be mailed to "+email+".");
+			redirectAttributes.addFlashAttribute("message", "File Upload is successful, data is being processed. Report will be mailed to "+email+".");
 			redirectAttributes.addFlashAttribute("uploadStatus", null);
 			
 			Date date = new Date(CURR_TIME_MILES);

@@ -274,6 +274,9 @@ function validate(file) {
 								<label for="contain">Upload Data File (.xlsx)</label> <input required type="file"
 									name="file" class="btn btn-primary mb-2" accept=".xlsx, .xls" id="dataFileBtn" onChange="validate(this.value)"/><br /> <br /> 
 								<input type="submit" id="btnFileSubmit" value="Submit" class="btn btn-primary mb-2" />
+								<button onclick="window.location='/data/fileupload';" type="button" id="btn_upload_new" class="btn btn-primary mb-2">
+									<span class="" aria-hidden="true">REFRESH</span>
+								</button>
 							</div>
 							<!-- file upload status message.. -->
 							<c:if test="${message !=null}">
