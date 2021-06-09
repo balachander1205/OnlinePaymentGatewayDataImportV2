@@ -54,8 +54,8 @@ public class Validator {
 	public String validateOverDueEMIAmount(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			String decAmount[] = amount.split("\\.");
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| OverDueEMIAmount contains decimal value | ";
 			}
 		}
@@ -65,10 +65,10 @@ public class Validator {
 	public String validateTotalOverDueEMIAmount(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
+			String decAmount[] = amount.split("\\.");
 			System.out.println("validateTotalOverDueEMIAmount:Amount="+amount);
 			System.out.println("validateTotalOverDueEMIAmount:Amount="+decAmount[0]+" decimal="+decAmount);
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| TotalOverDueEMIAmount contains decimal value | ";
 			}
 		}
@@ -78,8 +78,8 @@ public class Validator {
 	public String validateMinOverDueEMIAmount(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			String decAmount[] = amount.split("\\.");
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| MinOverDueEMIAmount contains decimal value | ";
 			}
 		}
@@ -89,8 +89,8 @@ public class Validator {
 	public String validateOverDueBlankField(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			String decAmount[] = amount.split("\\.");
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| OverDueBlankField contains decimal value | ";
 			}
 		}
@@ -100,8 +100,8 @@ public class Validator {
 	public String validateCharges(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			String decAmount[] = amount.split("\\.");
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| Charges contains decimal value | ";
 			}
 		}
@@ -111,8 +111,8 @@ public class Validator {
 	public String validateTotalChargesAmount(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			String decAmount[] = amount.split("\\.");
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| TotalChargesAmount contains decimal value | ";
 			}
 		}
@@ -122,8 +122,8 @@ public class Validator {
 	public String validateMinChargesAmount(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			String decAmount[] = amount.split("\\.");
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| MinChargesAmount contains decimal value | ";
 			}
 		}
@@ -133,8 +133,8 @@ public class Validator {
 	public String validateChargesBlankField(String amount) {
 		String message = "";
 		if(amount!=null && amount.contains(".")) {
-			String decAmount[] = amount.split(".");
-			if(decAmount[1]!=null && Integer.parseInt(decAmount[1])>0) {
+			String decAmount[] = amount.split("\\.");
+			if(decAmount[1]!=null && decAmount[1].length()>=2) {
 				message = message + "\n| ChargesBlankField contains decimal value | ";
 			}
 		}
@@ -180,7 +180,7 @@ public class Validator {
 			}
 			return true;
 		} catch (Exception e) {
-			return true;
+			return false;
 		}
 	}
 	

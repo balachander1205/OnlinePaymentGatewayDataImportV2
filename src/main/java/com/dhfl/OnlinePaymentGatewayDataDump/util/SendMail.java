@@ -25,7 +25,7 @@ public class SendMail {
 
 	public static void main(String[] args) {
 		//sendMail();
-		sendEmailWithAttachment("digumarthi.bala@gmail.com", "7895826431");
+		sendEmailWithAttachment("digumarthi.bala@gmail.com", "7895826431", "error");
 	}
 
 	public static void sendMail() {
@@ -106,7 +106,7 @@ public class SendMail {
 		}
 	}
 
-	public static void sendEmailWithAttachment(String email, String fileRefNum) {
+	public static void sendEmailWithAttachment(String email, String fileRefNum, String error) {
 		logger.debug("SendMail.sendEmailWithAttachment():="+email+ " File Reference Number="+fileRefNum);
 		System.out.println("SendMail.sendEmailWithAttachment():="+email+ " File Reference Number="+fileRefNum);
 		// Sender's email ID needs to be mentioned
@@ -129,7 +129,8 @@ public class SendMail {
 				+ "<p>Dear User,<br><br>File upload has completed with below refrenece number. "
 				+ "Please find the uploaded status report in the below link.<br><br>"
 				+ "Refrence Number : " + fileRefNum +"<br>"
-				+ "<a href='http://clicktopay.dhfl.com/data/download?fileName="+fileRefNum+"' target='_blank'>Click to download report.</a><br><br>"
+				+ "Error : "+ error +"<br>"
+				+ "<a href='https://clicktopay.dhfl.com/data/download?fileName="+fileRefNum+"' target='_blank'>Click to download report.</a><br><br>"
 				+ "This is a system generated e-mail and please do not reply.<br><br>"
 				+ "Warm regards,<br>"
 				+ "DHFL Administrator<br><br>"

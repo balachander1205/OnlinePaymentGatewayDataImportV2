@@ -12,4 +12,5 @@ public interface FileUploadDetailsInter {
 	List<FileUploadDetailsEntity> getAllUploadedFilesU();
 	List<FileUploadDetailsEntity> getAllUploadedFilesP();
 	List<FileUploadDetailsEntity> getAllUploadedFilesC();
+	int updateFileStatusError(String file_ref_num, String error);
 }

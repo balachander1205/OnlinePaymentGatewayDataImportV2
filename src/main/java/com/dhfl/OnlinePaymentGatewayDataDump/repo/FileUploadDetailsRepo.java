@@ -40,4 +40,9 @@ public interface FileUploadDetailsRepo extends CrudRepository<FileUploadDetailsE
 	@Modifying
 	@Query("update FileUploadDetailsEntity uploadData set file_status='E' where uploadData.file_ref_num =:file_ref_num")
 	int updateFileStatusE(@Param("file_ref_num") String file_ref_num);
+	
+	@Transactional
+	@Modifying
+	@Query("update FileUploadDetailsEntity uploadData set uploadData.ext_col0=:error where uploadData.file_ref_num =:file_ref_num")
+	int updateFileStatusError(@Param("file_ref_num") String file_ref_num, @Param("error") String error);
 }

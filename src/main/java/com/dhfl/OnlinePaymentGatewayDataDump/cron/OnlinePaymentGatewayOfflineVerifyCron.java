@@ -89,7 +89,8 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 				// List<DHFLCustomersEntity> customers =
 				// ExcelHelper.excelToTutorials(targetStream);
 				//List<DHFLCustomersEntity> customers = ReadExcelFile.excelToTutorials(targetStream);
-				List<DHFLCustomersEntity> customers = ReadExcelFile.parseExcelAndValidate(targetStream, file_ref_num);
+				ReadExcelFile readExcelFile = new ReadExcelFile();
+				List<DHFLCustomersEntity> customers = readExcelFile.parseExcelAndValidate(targetStream, file_ref_num);
 				int totalRows = customers != null || customers.size() > 0 ? customers.size() : 0;
 				try {
 					System.out.println("Customers Size====" + customers.size());
@@ -167,10 +168,11 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 			for(FileUploadDetailsEntity file : filesCompleted) {
 				String fileRefNum = file.getFile_ref_num();
 				String email = file.getEmail_id()!=null?file.getEmail_id():"";
+				String error = file.getExt_col0()!=null?file.getExt_col0():"";
 				if(email!=null && email!="" && email.contains("@")) {
 					logger.debug("CRON:Sending mail="+email+" File RefNo="+fileRefNum);
 					// Sending mail
-					sendMail.sendEmailWithAttachment(email, fileRefNum);
+					sendMail.sendEmailWithAttachment(email, fileRefNum, error);
 					// update status='E' in DB after mail sent
 					int count = fileUploadDetailsInter.updateFileStatusE(fileRefNum);
 					logger.debug("CRON:Updated="+count+" End of Sending mail="+email+" File RefNo="+fileRefNum);

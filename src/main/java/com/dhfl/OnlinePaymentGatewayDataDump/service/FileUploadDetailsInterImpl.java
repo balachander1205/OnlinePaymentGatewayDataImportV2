@@ -47,4 +47,9 @@ public class FileUploadDetailsInterImpl implements FileUploadDetailsInter{
 	public List<FileUploadDetailsEntity> getAllUploadedFilesC() {
 		return fileUploadServiceRepo.getAllUploadedFilesC();
 	}
+
+	@Override
+	public int updateFileStatusError(String file_ref_num, String error) {		
+		return fileUploadServiceRepo.updateFileStatusError(file_ref_num, error);
+	}
 }
