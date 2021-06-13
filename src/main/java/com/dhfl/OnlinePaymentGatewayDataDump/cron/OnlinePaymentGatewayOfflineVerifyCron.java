@@ -20,6 +20,7 @@ import com.dhfl.OnlinePaymentGatewayDataDump.service.FileUploadDetailsInter;
 import com.dhfl.OnlinePaymentGatewayDataDump.test.ReadExcel;
 import com.dhfl.OnlinePaymentGatewayDataDump.util.ReadExcelFile;
 import com.dhfl.OnlinePaymentGatewayDataDump.util.SendMail;
+import com.dhfl.OnlinePaymentGatewayDataDump.util.Validator;
 
 @Component
 public class OnlinePaymentGatewayOfflineVerifyCron {
@@ -84,29 +85,27 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 			if (uploadFileName != null && (uploadFileName.contains(".xlsx") || uploadFileName.contains(".xls"))) {
 				File initialFile = new File(uploadFileName);
 				FileInputStream targetStream = new FileInputStream(initialFile);
+				FileInputStream tempStream = new FileInputStream(initialFile);
 				System.out.println("Input Stream=" + targetStream);
 				long startTime = System.nanoTime();
 				// List<DHFLCustomersEntity> customers =
 				// ExcelHelper.excelToTutorials(targetStream);
 				//List<DHFLCustomersEntity> customers = ReadExcelFile.excelToTutorials(targetStream);
 				ReadExcelFile readExcelFile = new ReadExcelFile();
+				// Validate excel for headers
+				message = message + Validator.validateExcelFile(tempStream);
 				List<DHFLCustomersEntity> customers = readExcelFile.parseExcelAndValidate(targetStream, file_ref_num);
-				int totalRows = customers != null || customers.size() > 0 ? customers.size() : 0;
+				int totalRows = customers != null || customers.size() > 0 ? customers.size() : 0;				
 				try {
 					System.out.println("Customers Size====" + customers.size());
+					System.out.println("CRON:Message="+message);
 					if (customers.size() > 0) {
 						System.out.println("Customers Size1====" + customers.size());
 						List<String> brLoanCodes = respository.getAllBrLoanCodes();
 						List<String> appNumbers = respository.getAllAppNumbers();
-						//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>BrLoanCodes="+brLoanCodes);
-						//System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>appNumbers="+appNumbers);
-						/*for(String loanCode : brLoanCodes) {
-							System.out.println("Loan Code="+loanCode);
-						}*/
 						for (DHFLCustomersEntity entity : customers) {
 							String applNo = entity.getApplno();
 							String brLoanCode = entity.getBrloancode();
-							//System.out.println("ApplNumber----->>>>>" + applNo);
 							// Validating data over list.contains
 							if(brLoanCodes.size()>0 && appNumbers.size()>0) {
 								if (!brLoanCodes.contains(brLoanCode) || !appNumbers.contains(applNo)) {
@@ -148,13 +147,21 @@ public class OnlinePaymentGatewayOfflineVerifyCron {
 			        System.out.println("Execution time in nanoseconds: " + timeElapsed);
 			        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 				} catch (Exception e) {
-					logger.debug("Exception@inserting customer data=" + e);				
+					logger.debug("Exception@inserting customer data=" + e);
+					message = message + " Exception="+ e +" \n";
 				}
 			} else {
-				logger.debug("Invalid File format uploaded.");				
+				logger.debug("Invalid File format uploaded.");
+				message = message + "| Invalid File format uploaded. File upload failed |\n";
 			}
 		}catch(Exception e){
 			e.printStackTrace();
+			message = message + " Exception="+e+" \n";
+		}finally {
+			if(message!="" && message.length()>0) {
+				fileUploadDetailsInter.updateFileStatusError(file_ref_num, message);
+				System.out.println("File error update in DB="+file_ref_num+" Error="+message);
+			}
 		}
 	}
 	// Send processed file in mail attachment

@@ -1,9 +1,22 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.util;
 
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 public class Validator {
+	static String[] HEADERs = { "BrLoan Code", "Appl No", "Customer Name", "Mobile", "Overdue EMI", "Total Overdue EMI",
+			"Minimum Overdue Amount", "Overdue Blank Field", "Charges", "Total Charges Amount", "Minimum Charge Amount",
+			"Charge Blank Field" };
+	
 	public String validateBRLoanCode(String brLoanCode) {
 		String message = "";
 		boolean specialChars = validateSpecialChars(brLoanCode);
@@ -192,7 +205,116 @@ public class Validator {
 		}
 		return false;
 	}
-
+	
+	// validate excel file
+	public static String validateExcelFile(InputStream is) {
+		String message = "";
+		boolean HEADERS_FLAG = false;
+		try {
+			int rowNumber = 0;			
+			int headerCount = 0;
+			XSSFWorkbook workbook = new XSSFWorkbook(is);
+			XSSFSheet sheet = workbook.getSheetAt(0);
+			String[] headersArr = new String[12];
+			int totalRows = sheet.getLastRowNum();			
+			if(totalRows>1) {
+				for (Row row : sheet) {
+					String validationDesc = "";
+					Row currentRow = row;
+					// skip header
+					if (rowNumber == 0) {
+						rowNumber++;
+						Iterator<Cell> headers = currentRow.iterator();
+						while (headers.hasNext()) {
+							Cell headerCell = headers.next();
+							String headerValue = getCellValueByType(headerCell);
+							// String headerTrimValue = trimTrailingBlanks(headerValue);
+							headersArr[headerCount] = trimAdvanced(headerValue);
+							headerCount++;
+						}
+						System.out.println("Validator:File Headers="+java.util.Arrays.toString(HEADERs));
+						System.out.println("Validator:Uploaded File Headers="+java.util.Arrays.toString(headersArr));
+						HEADERS_FLAG = Arrays.equals(HEADERs, headersArr);
+					}
+					if (!HEADERS_FLAG) {
+						message = message + "| Headres Miss Match. File upload failed |\n";
+						break;
+					}if(isRowEmpty(row)) {
+						message = message + "| Rows are empty. |\n";
+						break;
+					}
+				}
+			}else {
+				message = message + "| Rows are empty |";
+			}
+		} catch (Exception e) {
+			if (!HEADERS_FLAG) {
+				message = message + "| Headres Miss Match. File upload failed |\n";
+			}
+			message = message + " | Exception = "+e.getMessage() + " |";
+			e.printStackTrace(System.out);
+		}
+		return message;
+	}
+	
+	public static boolean isRowEmpty(Row row) {
+		if (row == null) {
+			return true;
+		}
+		if (row.getLastCellNum() <= 0) {
+			return true;
+		}
+		for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
+			Cell cell = row.getCell(c);
+			if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
+				return false;
+		}
+		return true;
+	}
+	
+	public static String trimAdvanced(String value) {
+		Objects.requireNonNull(value);
+		int strLength = value.length();
+		int len = value.length();
+		int st = 0;
+		char[] val = value.toCharArray();
+		if (strLength == 0) {
+			return "";
+		}
+		while ((st < len) && (val[st] <= ' ') || (val[st] == '\u00A0')) {
+			st++;
+			if (st == strLength) {
+				break;
+			}
+		}
+		while ((st < len) && (val[len - 1] <= ' ') || (val[len - 1] == '\u00A0')) {
+			len--;
+			if (len == 0) {
+				break;
+			}
+		}
+		return (st > len) ? "" : ((st > 0) || (len < strLength)) ? value.substring(st, len) : value;
+	}
+	public static String getCellValueByType(Cell cell) {
+		String value = "0";
+		if(cell!=null) {
+			if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+				value = String.valueOf(cell.getNumericCellValue()) != null
+						|| String.valueOf(cell.getNumericCellValue()) != "" ? String.valueOf(cell.getNumericCellValue())
+								: "0";
+			}else if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+				value = String.valueOf(cell.getStringCellValue()) != null || String.valueOf(cell.getStringCellValue()) != ""
+						? String.valueOf(cell.getStringCellValue())
+						: "0";
+			}else {
+				value = "0";
+			}
+		}else {
+			value = "0";
+		}
+		//System.out.println("Value----->>>" + value);
+		return value;
+	}
 	public static void main(String[] args) {
 		String mobileNo = "111111";
 		Validator validator = new Validator();

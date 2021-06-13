@@ -1,5 +1,7 @@
 package com.dhfl.OnlinePaymentGatewayDataDump.util;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -7,12 +9,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +26,18 @@ import com.dhfl.OnlinePaymentGatewayDataDump.entity.DHFLCustomersEntity;
 import com.dhfl.OnlinePaymentGatewayDataDump.entity.FileUploadValidationEntity;
 import com.dhfl.OnlinePaymentGatewayDataDump.service.FileUploadDetailsInter;
 
-public class ReadExcelFile {
+public class ReadExcelFile_Bkp11062021 {
 	
 	@Autowired
 	FileUploadDetailsInter fileUploadDetailsInter;
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ReadExcelFile.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ReadExcelFile_Bkp11062021.class);
 	public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	static String[] HEADERs = { "BrLoan Code", "Appl No", "Customer Name", "Mobile", "Overdue EMI", "Total Overdue EMI",
 			"Minimum Overdue Amount", "Overdue Blank Field", "Charges", "Total Charges Amount", "Minimum Charge Amount",
 			"Charge Blank Field" };
 	static String SHEET = "Tutorials";
+	private static DecimalFormat df2 = new DecimalFormat("#.##");
 	
 	/*public static void main(String[] args) throws Exception {
 		FileInputStream fis = new FileInputStream(
@@ -202,9 +207,9 @@ public class ReadExcelFile {
 					Iterator<Cell> headers = currentRow.iterator();
 					while (headers.hasNext()) {
 						Cell headerCell = headers.next();
-						String headerValue = Validator.getCellValueByType(headerCell);
+						String headerValue = getCellValueByType(headerCell);
 						// String headerTrimValue = trimTrailingBlanks(headerValue);
-						headersArr[headerCount] = Validator.trimAdvanced(headerValue);
+						headersArr[headerCount] = trimAdvanced(headerValue);
 						headerCount++;
 					}
 					System.out.println("File Headers="+java.util.Arrays.toString(HEADERs));
@@ -213,7 +218,7 @@ public class ReadExcelFile {
 					continue;
 				}
 				FileUploadValidationEntity validation = new FileUploadValidationEntity();
-				if (HEADERS_FLAG && !Validator.isRowEmpty(row)) {					
+				if (HEADERS_FLAG && !isRowEmpty(row)) {					
 					try {
 						List<Cell> cells = new ArrayList<Cell>();
 						int lastColumn = Math.max(row.getLastCellNum(), 5);
@@ -376,6 +381,45 @@ public class ReadExcelFile {
 		return value;
 	}
 
+	public static boolean isRowEmpty(Row row) {
+		if (row == null) {
+			return true;
+		}
+		if (row.getLastCellNum() <= 0) {
+			return true;
+		}
+		for (int c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
+			Cell cell = row.getCell(c);
+			if (cell != null && cell.getCellType() != Cell.CELL_TYPE_BLANK)
+				return false;
+		}
+		return true;
+	}
+
+	public static String trimAdvanced(String value) {
+		Objects.requireNonNull(value);
+		int strLength = value.length();
+		int len = value.length();
+		int st = 0;
+		char[] val = value.toCharArray();
+		if (strLength == 0) {
+			return "";
+		}
+		while ((st < len) && (val[st] <= ' ') || (val[st] == '\u00A0')) {
+			st++;
+			if (st == strLength) {
+				break;
+			}
+		}
+		while ((st < len) && (val[len - 1] <= ' ') || (val[len - 1] == '\u00A0')) {
+			len--;
+			if (len == 0) {
+				break;
+			}
+		}
+		return (st > len) ? "" : ((st > 0) || (len < strLength)) ? value.substring(st, len) : value;
+	}
+	
 	public static String format2fDouble(String value) {
 		return String.format("%.2f", value);
 	}
