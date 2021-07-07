@@ -46,4 +46,9 @@ public class DHFLCustomersInterImpl implements DHFLCustomersInter{
 		DHFLCustomersEntity customersEntity = dhflCustomersRepo.searchByAppNoLoanCode(applno, brloancode);
 		return customersEntity;
 	}
+
+	@Override
+	public void deleteCustomers() {
+		dhflCustomersRepo.deleteAll();
+	}
 }

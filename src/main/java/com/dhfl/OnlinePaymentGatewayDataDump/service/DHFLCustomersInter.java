@@ -16,4 +16,5 @@ public interface DHFLCustomersInter {
 			Long MinimumChargeAmount, String mobileno, String customerNam, 
 			Long overdueBlankField, Long chanrgesBlankField);
 	public CompletableFuture<DHFLCustomersEntity> saveRecord(DHFLCustomersEntity entity);
+	public void deleteCustomers();
 }

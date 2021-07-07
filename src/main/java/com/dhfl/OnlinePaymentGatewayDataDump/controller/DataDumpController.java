@@ -112,59 +112,6 @@ public class DataDumpController {
 			fileUploadDetailsEntity.setFile_status("U");
 			fileUploadDetailsEntity.setFile_upload_time(date);
 			fileUploadDetailsRepo.save(fileUploadDetailsEntity);
-			/*String uploadFileName = file.getOriginalFilename();
-			if (uploadFileName != null && (uploadFileName.contains(".xlsx") || uploadFileName.contains(".xls"))) {
-				File initialFile = new File(UPLOADED_FOLDER + file.getOriginalFilename());
-				FileInputStream targetStream = new FileInputStream(initialFile);
-				System.out.println("Input Stream="+targetStream);
-				//List<DHFLCustomersEntity> customers = ExcelHelper.excelToTutorials(targetStream);
-				List<DHFLCustomersEntity> customers = ReadExcelFile.excelToTutorials(targetStream);
-				int totalRows = customers!=null || customers.size()>0?customers.size():0;
-				redirectAttributes.addFlashAttribute("totalRows", totalRows);
-				try {
-					System.out.println("Customers Size===="+customers.size());
-					if(customers.size()==0) {
-						message = applicationConfig.getInvalidFileUploaded();
-						doRedirect(null, updatedRows, insertedRows, message, redirectAttributes, httpSession);
-					}
-					if(customers.size()>0) {
-						System.out.println("Customers Size1===="+customers.size());					
-						for(DHFLCustomersEntity entity : customers) {
-							String applNo = entity.getApplno();
-							String brLoanCode = entity.getBrloancode();
-							System.out.println("ApplNumber----->>>>>"+applNo);
-							DHFLCustomersEntity row = respository.searchByAppNoLoanCode(applNo, brLoanCode);
-							// insert row if data not exists
-							if(row==null) {
-								respository.save(entity);
-								insertedRows++;
-							}else {
-								// Update row
-								System.out.println("Row already exists..Updating record..");
-								dhflCustomersInter.updateCustomer(applNo, entity.getMinimumOverdueAmount(), entity.getTotalOverdueEMI(), 
-										entity.getTotalChargesAmount(), entity.getMinimumChargeAmount(), entity.getMobileno(),
-										entity.getCustomername(), entity.getOverdueBlankField(), entity.getChargeBlankField());
-								updatedRows++;
-							}
-						}
-						message = "Successfully uploaded '" + file.getOriginalFilename() + "'";
-						doRedirect("true", updatedRows, insertedRows, message, redirectAttributes, httpSession);
-						System.out.println("Total Rows="+totalRows+" | insertedRows="+insertedRows+" | updatedRows="+updatedRows);
-					}
-				}catch(Exception e) {
-					logger.debug("Exception@inserting customer data="+e);					
-					message = "File upload is not successful :: " + file.getOriginalFilename() + "'";
-					doRedirect("true", updatedRows, insertedRows, message, redirectAttributes, httpSession);
-					return "redirect:/data/uploadStatus";
-				}
-			}else {
-				logger.debug("Invalid File format uploaded.");
-				redirectAttributes.addFlashAttribute("message", applicationConfig.getInvalidFileUploaded());
-				redirectAttributes.addFlashAttribute("uploadStatus", null);
-				return "redirect:/data/uploadStatus";
-			}*/
-			//respository.saveAll(customers);
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			redirectAttributes.addFlashAttribute("message",
@@ -207,5 +154,20 @@ public class DataDumpController {
 				// Contet-Length
 				.contentLength(file.length()) //
 				.body(resource);
+	}
+	
+	/*
+	 *	deleteCustomers
+	 *	@param  redirectAttributes
+	 *	@param httpSession
+	 *	@return
+	 *	Method to delete customer from DB.
+	 * */
+	@GetMapping("/purge")
+	public String deleteCustomers(RedirectAttributes redirectAttributes, HttpSession httpSession) {
+		dhflCustomersInter.deleteCustomers();
+		redirectAttributes.addFlashAttribute("message", "Data deletion is successful.");
+		redirectAttributes.addFlashAttribute("uploadStatus", null);
+		return "redirect:/data/uploadStatus";
 	}
 }
