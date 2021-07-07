@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -164,10 +165,13 @@ public class DataDumpController {
 	 *	Method to delete customer from DB.
 	 * */
 	@GetMapping("/purge")
+	@ResponseBody
 	public String deleteCustomers(RedirectAttributes redirectAttributes, HttpSession httpSession) {
+		logger.debug("/purge:deleteCustomers:started");
 		dhflCustomersInter.deleteCustomers();
 		redirectAttributes.addFlashAttribute("message", "Data deletion is successful.");
 		redirectAttributes.addFlashAttribute("uploadStatus", null);
-		return "redirect:/data/uploadStatus";
+		logger.debug("/purge:deleteCustomers:ended");
+		return "Data is successfully purged in DB.";
 	}
 }

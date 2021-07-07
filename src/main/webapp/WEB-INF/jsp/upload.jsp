@@ -8,6 +8,11 @@
 <title>DHFL Customer Data Upload</title>
 </head>
 <style>
+button#btn_purge {
+    background: red;
+    border: solid 1px red;
+    float: right;
+}
 img#img_sample_data {
     width: 100%;
 }
@@ -246,6 +251,21 @@ function validate(file) {
         $("#dataFileBtn").val("");
     }
 }
+$(document).ready(function(){
+	// onclick call
+	$("#btn_purge").click(function(){
+		console.log("Onclick PURGE");
+		$.ajax({url: "purge", 
+			method : "GET",
+			success: function(result){
+				console.log(result);
+				alert(result);
+			},fail: function(data, error){
+				console.log(data+ " Erro:"+error);
+			}
+		});
+	});
+});
 </script>
 <body>
 	<!-- Navigation -->
@@ -275,7 +295,10 @@ function validate(file) {
 									name="file" class="btn btn-primary mb-2" accept=".xlsx, .xls" id="dataFileBtn" onChange="validate(this.value)"/><br /> <br /> 
 								<input type="submit" id="btnFileSubmit" value="Submit" class="btn btn-primary mb-2" />
 								<button onclick="window.location='/data/fileupload';" type="button" id="btn_upload_new" class="btn btn-primary mb-2">
-									<span class="" aria-hidden="true">REFRESH</span>
+									<span class="" aria-hidden="true">Refresh</span>
+								</button>
+								<button type="button" id="btn_purge" class="btn btn-primary mb-2">
+									<span class="" aria-hidden="true">Purge</span>
 								</button>
 							</div>
 							<!-- file upload status message.. -->

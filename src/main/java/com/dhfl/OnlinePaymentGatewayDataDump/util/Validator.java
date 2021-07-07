@@ -315,6 +315,18 @@ public class Validator {
 		//System.out.println("Value----->>>" + value);
 		return value;
 	}
+	
+	public String validateCustomerName(String custName) {
+		String message = "";
+		try {
+			if(custName==null || custName=="" || custName.length()<=0) {
+				message = "\n| Customer name is empty. |";
+			}			
+		}catch (Exception e) {
+			message = "\n| Invalid Customer name. |";
+		}
+		return message;
+	}
 	public static void main(String[] args) {
 		String mobileNo = "111111";
 		Validator validator = new Validator();

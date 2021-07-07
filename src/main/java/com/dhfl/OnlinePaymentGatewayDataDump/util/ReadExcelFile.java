@@ -259,6 +259,7 @@ public class ReadExcelFile {
 								break;
 							case 2:
 								String custName = getCellValueByType(currentCell);
+								validationDesc = validationDesc + validator.validateCustomerName(custName);
 								tutorial.setCustomername(custName);
 								validation.setCustomername(custName);
 								break;
