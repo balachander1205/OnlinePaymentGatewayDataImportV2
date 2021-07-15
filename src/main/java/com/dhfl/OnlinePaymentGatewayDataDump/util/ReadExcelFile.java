@@ -193,9 +193,11 @@ public class ReadExcelFile {
 			String[] headersArr = new String[12];
 			boolean HEADERS_FLAG = false;
 			Validator validator = new Validator();
+			List<String> brLoanCodes = new ArrayList<String>();
 			for (Row row : sheet) {
 				String validationDesc = "";
 				Row currentRow = row;
+				boolean isDuplicateRow = false;
 				// skip header
 				if (rowNumber == 0) {
 					rowNumber++;
@@ -248,6 +250,12 @@ public class ReadExcelFile {
 								validationDesc = validationDesc + validator.validateBRLoanCode(loanCode);
 								tutorial.setBrloancode(loanCode);
 								validation.setBrloancode(loanCode);
+								// Check duplicate records
+								if(brLoanCodes.contains(loanCode)) {
+									isDuplicateRow = true;
+								}else {
+									brLoanCodes.add(loanCode);
+								}
 								break;
 							case 1:
 								String appNo = formatter.formatCellValue(currentCell);
@@ -264,54 +272,111 @@ public class ReadExcelFile {
 								validation.setCustomername(custName);
 								break;
 							case 3:
-								Double mobileNo = new Double(getCellValueByType(currentCell));
-								validationDesc = validationDesc + validator.validateMobileNo(String.valueOf(mobileNo.longValue()));
-								tutorial.setMobileno(String.valueOf(mobileNo.longValue()));
-								validation.setMobileno(String.valueOf(mobileNo.longValue()));
+								String validateParseErro = validator.validateParseError(getCellValueByType(currentCell), "Mobile Number");
+								if(validateParseErro.length()<=0) {
+									// if no parsing error
+									Double mobileNo = new Double(getCellValueByType(currentCell));
+									validationDesc = validationDesc + validator.validateMobileNo(String.valueOf(mobileNo.longValue()));
+									tutorial.setMobileno(String.valueOf(mobileNo.longValue()));
+									validation.setMobileno(String.valueOf(mobileNo.longValue()));
+								}else {
+									tutorial.setMobileno(getCellValueByType(currentCell));
+									validation.setMobileno(getCellValueByType(currentCell));
+									validationDesc = validationDesc + validateParseErro;
+								}
+								
 								break;
 							case 4:
 								break;
 							case 5:
 								String totalOverDueEMI = getCellValueByType(currentCell);
-								validationDesc = validationDesc + validator.validateTotalOverDueEMIAmount(totalOverDueEMI);
-								tutorial.setTotalOverdueEMI((long) Double.parseDouble(totalOverDueEMI));
-								validation.setTotalOverdueEMI(String.valueOf(Double.parseDouble(totalOverDueEMI)));
+								// validate for parsing error
+								String validateParseErr1 = validator.validateParseError(totalOverDueEMI, "Total Over Due EMI Amount");
+								if(validateParseErr1.length()<=0) {
+									validationDesc = validationDesc + validator.validateTotalOverDueEMIAmount(totalOverDueEMI);
+									tutorial.setTotalOverdueEMI((long) Double.parseDouble(totalOverDueEMI));
+									validation.setTotalOverdueEMI(String.valueOf(Double.parseDouble(totalOverDueEMI)));
+								}else {
+									tutorial.setTotalOverdueEMI((long) Double.parseDouble("0.0"));
+									validation.setTotalOverdueEMI(totalOverDueEMI);
+									validationDesc = validationDesc + validateParseErr1;
+								}
 								break;
 							case 6:
 								String minimumOverdueAmount = getCellValueByType(currentCell);
-								validationDesc = validationDesc + validator.validateMinOverDueEMIAmount(minimumOverdueAmount);
-								tutorial.setMinimumOverdueAmount((long) Double.parseDouble(minimumOverdueAmount));
-								validation.setMinimumOverdueAmount(minimumOverdueAmount);
+								// validate for parsing error
+								String validateParseErr2 = validator.validateParseError(minimumOverdueAmount, "Minimum Over Due Amount ");
+								if(validateParseErr2.length()<=0) {
+									validationDesc = validationDesc + validator.validateMinOverDueEMIAmount(minimumOverdueAmount);
+									tutorial.setMinimumOverdueAmount((long) Double.parseDouble(minimumOverdueAmount));
+									validation.setMinimumOverdueAmount(minimumOverdueAmount);
+								}else {
+									tutorial.setMinimumOverdueAmount((long) Double.parseDouble("0.0"));
+									validation.setMinimumOverdueAmount(minimumOverdueAmount);
+									validationDesc = validationDesc + validateParseErr2;
+								}
 								break;
 							case 7:
 								String overdueBlankField = getCellValueByType(currentCell) != null
 								&& getCellValueByType(currentCell) != "" ? getCellValueByType(currentCell) : "0";
-								validationDesc = validationDesc + validator.validateOverDueBlankField(overdueBlankField);
-								tutorial.setOverdueBlankField((long) Double.parseDouble(overdueBlankField));
-								validation.setOverdueBlankField(overdueBlankField);
-								//tutorial.setTotalChargesAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
+								// validate for parsing error
+								String validateParseErr3 = validator.validateParseError(overdueBlankField, "Over Due Blank Field");
+								if(validateParseErr3.length()<=0) {
+									validationDesc = validationDesc + validator.validateOverDueBlankField(overdueBlankField);
+									tutorial.setOverdueBlankField((long) Double.parseDouble(overdueBlankField));
+									validation.setOverdueBlankField(overdueBlankField);
+									//	tutorial.setTotalChargesAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
+								}else {
+									tutorial.setOverdueBlankField((long) Double.parseDouble("0.0"));
+									validation.setOverdueBlankField(overdueBlankField);
+									validationDesc = validationDesc + validateParseErr3;
+								}
 								break;
 							case 8:
 								break;
 							case 9:
 								String totalChargesAmount = getCellValueByType(currentCell);
-								validationDesc = validationDesc + validator.validateTotalChargesAmount(totalChargesAmount);
-								tutorial.setTotalChargesAmount((long) Double.parseDouble(totalChargesAmount));
-								validation.setTotalChargesAmount(totalChargesAmount);
+								// validate for parsing error
+								String validateParseErr4 = validator.validateParseError(totalChargesAmount, "Total Charges Amount");
+								if(validateParseErr4.length()<=0) {
+									validationDesc = validationDesc + validator.validateTotalChargesAmount(totalChargesAmount);
+									tutorial.setTotalChargesAmount((long) Double.parseDouble(totalChargesAmount));
+									validation.setTotalChargesAmount(totalChargesAmount);
+								}else {
+									tutorial.setTotalChargesAmount((long) Double.parseDouble("0.0"));
+									validation.setTotalChargesAmount(totalChargesAmount);
+									validationDesc = validationDesc + validateParseErr4;
+								}
 								break;
 							case 10:
 								String minimumChargeAmount = getCellValueByType(currentCell);
-								validationDesc = validationDesc + validator.validateMinChargesAmount(minimumChargeAmount);
-								tutorial.setMinimumChargeAmount((long) Double.parseDouble(minimumChargeAmount));
-								validation.setMinimumChargeAmount(minimumChargeAmount);
+								// validate for parsing error
+								String validateParseErr5 = validator.validateParseError(minimumChargeAmount, "Minimum Charges Amount");
+								if(validateParseErr5.length()<=0) {
+									validationDesc = validationDesc + validator.validateMinChargesAmount(minimumChargeAmount);
+									tutorial.setMinimumChargeAmount((long) Double.parseDouble(minimumChargeAmount));
+									validation.setMinimumChargeAmount(minimumChargeAmount);
+								}else {
+									tutorial.setMinimumChargeAmount((long) Double.parseDouble("0.0"));
+									validation.setMinimumChargeAmount(minimumChargeAmount);
+									validationDesc = validationDesc + validateParseErr5;
+								}
 								break;
 							case 11:
 								String chargeBlankField = getCellValueByType(currentCell) != null
 								&& getCellValueByType(currentCell) != "" ? getCellValueByType(currentCell) : "0";
-								validationDesc = validationDesc + validator.validateChargesBlankField(chargeBlankField);
-								tutorial.setChargeBlankField((long) Double.parseDouble(chargeBlankField));
-								validation.setChargeBlankField(chargeBlankField);
-								//tutorial.setMinimumChargeAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
+								// validate for parsing error
+								String validateParseErr6 = validator.validateParseError(chargeBlankField, "Charges Blank Field");
+								if(validateParseErr6.length()<=0) {
+									validationDesc = validationDesc + validator.validateChargesBlankField(chargeBlankField);
+									tutorial.setChargeBlankField((long) Double.parseDouble(chargeBlankField));
+									validation.setChargeBlankField(chargeBlankField);
+									//tutorial.setMinimumChargeAmount((long) Double.parseDouble(getCellValueByType(currentCell)));
+								}else {
+									tutorial.setChargeBlankField((long) Double.parseDouble("0.0"));
+									validation.setChargeBlankField(chargeBlankField);
+									validationDesc = validationDesc + validateParseErr6;
+								}
 								break;
 							default:
 								break;
@@ -325,10 +390,16 @@ public class ReadExcelFile {
 						validations.add(validation);
 						System.out.println("======validationDesc="+validationDesc+" size="+validationDesc.length());
 						//if(validationDesc==null || validationDesc=="") {
-						if(validationDesc.length()==0) {
+						//if(validationDesc.length()==0) {
+						// Don' insert/update if duplicate records in excel data
+						System.out.println("BrLoan Codes="+brLoanCodes + " isDuplicateRow="+isDuplicateRow);
+						if(validationDesc.length()==0 && !isDuplicateRow) {
 							System.out.println("====validationDesc is false");
 							validation.setDescription("Success");
 							customers.add(tutorial);
+							isDuplicateRow = false; // Set isDuplicateRow =false;
+						}else if(isDuplicateRow){
+							validation.setDescription("Duplicate");
 						}
 					}catch (Exception e) {
 						validationDesc = validationDesc+" Error occured while parsing excel file=" + e.getMessage();
@@ -337,7 +408,7 @@ public class ReadExcelFile {
 						LOG.debug("Xception:="+file_ref_num+"="+error);
 					}
 				}else {
-					validationDesc = validationDesc + "File headers miss matched.";
+					//validationDesc = validationDesc + "File headers miss matched.";
 					validation.setDescription(validationDesc);
 					validations.add(validation);
 				}

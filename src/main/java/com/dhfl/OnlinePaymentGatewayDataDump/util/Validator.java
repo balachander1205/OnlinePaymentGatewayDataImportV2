@@ -327,6 +327,17 @@ public class Validator {
 		}
 		return message;
 	}
+	
+	public String validateParseError(String text, String type) {
+		String message = "";
+		try {
+			Double mobileNo = new Double(text);
+		}catch (Exception e) {
+			message = "\n| Invalid "+type+" |";
+			e.printStackTrace();
+		}
+		return message;
+	}
 	public static void main(String[] args) {
 		String mobileNo = "111111";
 		Validator validator = new Validator();
