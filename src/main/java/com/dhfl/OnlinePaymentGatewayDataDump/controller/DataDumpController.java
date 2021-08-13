@@ -174,4 +174,13 @@ public class DataDumpController {
 		logger.debug("/purge:deleteCustomers:ended");
 		return "Data is successfully purged in DB.";
 	}
+	
+	/* -- Method to return maintenance page
+	 * maintenance
+	 * @return
+	 * */
+	@GetMapping("/maintenance")
+	public String maintenance() {		
+		return "maintenance";
+	}
 }

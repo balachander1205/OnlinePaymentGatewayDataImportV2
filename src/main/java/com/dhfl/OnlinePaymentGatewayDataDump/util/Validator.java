@@ -319,7 +319,7 @@ public class Validator {
 	public String validateCustomerName(String custName) {
 		String message = "";
 		try {
-			if(custName==null || custName=="" || custName.length()<=0) {
+			if(custName==null || custName=="" || custName=="0" || custName.length()<=0) {
 				message = "\n| Customer name is empty. |";
 			}			
 		}catch (Exception e) {

@@ -267,7 +267,7 @@ public class ReadExcelFile {
 								break;
 							case 2:
 								String custName = getCellValueByType(currentCell);
-								validationDesc = validationDesc + validator.validateCustomerName(custName);
+								validationDesc = validationDesc + validator.validateCustomerName(custName.trim());
 								tutorial.setCustomername(custName);
 								validation.setCustomername(custName);
 								break;
@@ -283,8 +283,7 @@ public class ReadExcelFile {
 									tutorial.setMobileno(getCellValueByType(currentCell));
 									validation.setMobileno(getCellValueByType(currentCell));
 									validationDesc = validationDesc + validateParseErro;
-								}
-								
+								}								
 								break;
 							case 4:
 								break;

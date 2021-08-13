@@ -129,7 +129,7 @@ public class SendMail {
 				+ "<p>Dear User,<br><br>File upload has completed with below refrenece number. "
 				+ "Please find the uploaded status report in the below link.<br><br>"
 				+ "Refrence Number : " + fileRefNum +"<br>"
-				+ "Error : "+ error +"<br>"
+				//+ "Error : "+ error +"<br>"
 				+ "<a href='https://clicktopay.dhfl.com/data/download?fileName="+fileRefNum+"' target='_blank'>Click to download report.</a><br><br>"
 				+ "This is a system generated e-mail and please do not reply.<br><br>"
 				+ "Warm regards,<br>"
