@@ -256,7 +256,7 @@ body {
 <body>
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-sm bg-light navbar-light static-top">
-		<img style="margin: 25px;" src="/images/logo.png" alt="Logo"
+		<img style="margin: 25px;" src="/images/logo.svg" alt="Logo"
 			style="width:40px;">
 		<div class="rightNav">
 			<span class="call"> <a href="tel:1800223435">1800 22 3435</a>

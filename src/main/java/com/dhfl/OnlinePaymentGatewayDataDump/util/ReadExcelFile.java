@@ -391,7 +391,7 @@ public class ReadExcelFile {
 						//if(validationDesc==null || validationDesc=="") {
 						//if(validationDesc.length()==0) {
 						// Don' insert/update if duplicate records in excel data
-						System.out.println("BrLoan Codes="+brLoanCodes + " isDuplicateRow="+isDuplicateRow);
+						System.out.println("BrLoan Codes size="+brLoanCodes.size() + " isDuplicateRow="+isDuplicateRow);
 						if(validationDesc.length()==0 && !isDuplicateRow) {
 							System.out.println("====validationDesc is false");
 							validation.setDescription("Success");

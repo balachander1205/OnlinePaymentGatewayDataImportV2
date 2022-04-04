@@ -270,10 +270,10 @@ $(document).ready(function(){
 <body>
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-sm bg-light navbar-light static-top">
-		<img style="margin: 25px;" src="/images/logo.png" alt="Logo"
+		<img style="margin: 25px;" src="/images/logo.svg" alt="Logo"
 			style="width:40px;">
 		<div class="rightNav">
-			<span class="call"> <a href="tel:180030001919">1800 3000 1919</a>
+			<span class="call"> <a href="tel:18002666444">1800 2666 444</a>
 			</span>
 		</div>
 	</nav>

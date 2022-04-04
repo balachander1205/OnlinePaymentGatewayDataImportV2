@@ -59,7 +59,7 @@ body {
 <body>
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-sm bg-light navbar-light static-top">
-			<img src="/images/logo.png" alt="Logo" style="margin:25px;">
+			<img src="/images/logo.svg" alt="Logo" style="margin:25px;">
 	</nav>
 	<!-- <h2>Search Form</h2> -->
 	<!-- <script type="text/javascript" src="https://www.tecprocesssolution.com/proto/P2M/server/lib/checkout.js"></script> -->
